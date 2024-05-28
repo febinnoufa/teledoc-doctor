@@ -1,52 +1,58 @@
 import 'package:deledocdoctor/screens/Home/servise/model_doc.dart';
 import 'package:get/get.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class DoctorController extends GetxController {
-  var doctorModel = DoctorModel(
+  var doctor = DoctorModel(
     bio: '',
     email: '',
     experience: '',
     licensenumber: '',
-    gender: '',
+    genter: '',
     name: '',
-    phonenumber: '',
+    phonenumber: 0,
     place: '',
     profile: '',
-    experiencecertificate: null,
+    //experiencecertificate: null,
     licenseimage: '',
     specialist: '',
     password: '',
   ).obs;
 
-  var isLoading = true.obs;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _db = FirebaseFirestore.instance;
 
   @override
   void onInit() {
     super.onInit();
-    print("shgfduytfgrweeytwey,,,,,,,,,,,,,,,,,");
     fetchDoctorDetails();
   }
 
   void fetchDoctorDetails() async {
     try {
-      isLoading(true);
-      User? user = FirebaseAuth.instance.currentUser;
-      if (user != null) {
-        DocumentSnapshot doc = await FirebaseFirestore.instance
-            .collection('approveddoctors')
-            .doc(user.uid)
-            .get();
-      
+      User? currentUser = _auth.currentUser;
+      if (currentUser != null) {
+        DocumentSnapshot doc = await _db.collection('approveddoctors').doc(currentUser.uid).get();
         if (doc.exists) {
-          doctorModel.value = DoctorModel.fromDocumentSnapshot(doc);
+          doctor.value = DoctorModel.fromDocumentSnapshot(doc.data() as Map<String, dynamic>);
         }
       }
     } catch (e) {
-      print("Error fetching doctor details: $e");
-    } finally {
-      isLoading(false);
+      // Handle error
+      print(e);
     }
   }
+
+
+  // addSchedule(String date, String startTime, String endTime)async{
+  //    User? currentUser = _auth.currentUser;
+  //   _db.collection("approveddoctors").doc(currentUser!.uid).collection("schedules").add({
+  //     'date':date,
+  //     'startTime':startTime,
+  //     'endTime':endTime,
+  //     'createdAt':FieldValue.serverTimestamp(),
+  //   });
+
+  // }
 }

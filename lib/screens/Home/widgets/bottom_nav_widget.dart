@@ -1,6 +1,7 @@
 import 'package:deledocdoctor/screens/Home/screens/home.dart';
 import 'package:deledocdoctor/screens/Home/screens/profile_screen.dart';
-import 'package:deledocdoctor/screens/Home/widgets/profile_photo.dart';
+import 'package:deledocdoctor/screens/Home/screens/time_schedule_screen.dart';
+
 import 'package:flutter/material.dart';
 
 import 'package:flutter/services.dart';
@@ -37,7 +38,6 @@ class _MyHomePageState extends State<BotomNavigationBar> {
             physics: const NeverScrollableScrollPhysics(),
             controller: pageController,
             children: <Widget>[
-              DoctorHomeScreen(),
               Container(
                 alignment: Alignment.center,
                 child: const Icon(
@@ -46,32 +46,17 @@ class _MyHomePageState extends State<BotomNavigationBar> {
                   color: Color.fromARGB(255, 35, 10, 10),
                 ),
               ),
-
-              Container(
-                alignment: Alignment.center,
-                child: Icon(
-                  Icons.favorite_rounded,
-                  size: 56,
-                  color: Colors.red[400],
-                ),
-              ),
-              //    Container(
-              //   alignment: Alignment.center,
-              //   child: Icon(
-              //     Icons.email_rounded,
-              //     size: 56,
-              //     color: Colors.green[400],
-              //   ),
-              // ),
               // Container(
               //   alignment: Alignment.center,
               //   child: Icon(
-              //     Icons.email_rounded,
+              //     Icons.favorite_rounded,
               //     size: 56,
-              //     color: Colors.green[400],
+              //     color: Colors.red[400],
               //   ),
               // ),
-              DoctorDetailsScreen()
+              TimeSchedulingScreen(),
+              DoctorHomeScreen(),
+              DoctorDetailsPage(),
             ],
           ),
           bottomNavigationBar: WaterDropNavBar(
