@@ -45,7 +45,8 @@ class TimeSchedulingScreen extends StatelessWidget {
                     date: schedule.date,
                     startTime: schedule.startTime,
                     endTime: schedule.endTime,
-                    onRemove: () => displayController.removeSchedule(schedule.id),
+                    onRemove: () =>
+                        displayController.removeSchedule(schedule.id),
                   );
                 },
               );

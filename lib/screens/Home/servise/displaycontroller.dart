@@ -7,47 +7,60 @@ class DisplayController extends GetxController {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  DisplayController() {
-    fetchSchedules();
+  @override
+  void onInit() {
+    super.onInit();
+    fetchUserSchedules();
   }
 
-  void fetchSchedules() async {
-    User? currentUser = _auth.currentUser;
-    if (currentUser != null) {
-      _db.collection("approveddoctors")
-          .doc(currentUser.uid)
-          .collection("schedules")
-          .orderBy('createdAt')
-          .snapshots()
-          .listen((snapshot) {
-        schedules.value = snapshot.docs.map((doc) => ScheduleItem.fromFirestore(doc)).toList();
-      });
+  
+
+  Future<void> fetchUserSchedules() async {
+    try {
+      List<ScheduleItem> fetchedSchedules = await _getUserSchedules();
+      schedules.assignAll(fetchedSchedules);
+    } catch (e) {
+      print("Error fetching schedules: $e");
     }
   }
 
-  void addSchedule(String date, String startTime, String endTime) async {
+  Future<List<ScheduleItem>> _getUserSchedules() async {
     User? currentUser = _auth.currentUser;
     if (currentUser != null) {
-      await _db.collection("approveddoctors")
-          .doc(currentUser.uid)
-          .collection("schedules")
-          .add({
+      QuerySnapshot querySnapshot = await _db
+          .collection('schedule')
+          .where('docId', isEqualTo: currentUser.uid)
+          .orderBy('createdAt', descending: true)
+          .get();
+
+      List<ScheduleItem> schedules = querySnapshot.docs.map((doc) {
+        return ScheduleItem.fromFirestore(doc);
+      }).toList();
+
+      return schedules;
+    } else {
+      throw Exception("No user is currently signed in.");
+    }
+  }
+
+  void scheduleAdd(String date, String startTime, String endTime) async {
+    User? currentUser = _auth.currentUser;
+    if (currentUser != null) {
+      await _db.collection("schedule").doc().set({
         'date': date,
         'startTime': startTime,
         'endTime': endTime,
-        'createdAt': FieldValue.serverTimestamp(),
+        'docId': currentUser.uid,
+        'createdAt': FieldValue.serverTimestamp()
       });
     }
   }
 
   void removeSchedule(String scheduleId) async {
-    User? currentUser = _auth.currentUser;
-    if (currentUser != null) {
-      await _db.collection("approveddoctors")
-          .doc(currentUser.uid)
-          .collection("schedules")
-          .doc(scheduleId)
-          .delete();
+    try {
+      await _db.collection("schedule").doc(scheduleId).delete();
+    } catch (e) {
+      print("Error removing schedule: $e");
     }
   }
 }
@@ -66,7 +79,7 @@ class ScheduleItem {
   });
 
   factory ScheduleItem.fromFirestore(DocumentSnapshot doc) {
-    Map data = doc.data() as Map;
+    Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
     return ScheduleItem(
       id: doc.id,
       date: data['date'] ?? '',

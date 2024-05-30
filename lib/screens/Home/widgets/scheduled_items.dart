@@ -36,9 +36,7 @@ class ScheduledItem extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
-           // mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              SizedBox(width: 80,),
               Text(
                 'Date: $date',
                 style: const TextStyle(
@@ -46,7 +44,7 @@ class ScheduledItem extends StatelessWidget {
                   fontSize: 16,
                 ),
               ),
-               SizedBox(width: 40,),
+              const Spacer(),
               IconButton(
                 icon: Icon(Icons.delete, color: Colors.red),
                 onPressed: onRemove,
@@ -56,7 +54,6 @@ class ScheduledItem extends StatelessWidget {
           const SizedBox(height: 8),
           Row(
             children: [
-              const SizedBox(width: 60),
               Text(
                 ' $startTime',
                 style: const TextStyle(fontSize: 14),
