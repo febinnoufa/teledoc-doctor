@@ -13,8 +13,6 @@ class DisplayController extends GetxController {
     fetchUserSchedules();
   }
 
-  
-
   Future<void> fetchUserSchedules() async {
     try {
       List<ScheduleItem> fetchedSchedules = await _getUserSchedules();
@@ -53,12 +51,14 @@ class DisplayController extends GetxController {
         'docId': currentUser.uid,
         'createdAt': FieldValue.serverTimestamp()
       });
+      await fetchUserSchedules(); // Refresh the schedule list after adding a new schedule
     }
   }
 
   void removeSchedule(String scheduleId) async {
     try {
       await _db.collection("schedule").doc(scheduleId).delete();
+      await fetchUserSchedules(); // Refresh the schedule list after deleting a schedule
     } catch (e) {
       print("Error removing schedule: $e");
     }

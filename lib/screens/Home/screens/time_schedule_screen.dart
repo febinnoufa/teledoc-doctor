@@ -32,7 +32,7 @@ class TimeSchedulingScreen extends StatelessWidget {
             TimeScheduleWidget(),
             const SizedBox(height: 10),
             const TimeScheduleButtonWidget(),
-            const SizedBox(height: 30),
+            const SizedBox(height: 10),
             Obx(() {
               return ListView.builder(
                 physics: const NeverScrollableScrollPhysics(),
