@@ -36,18 +36,8 @@ class SendApplicasionWidget extends StatelessWidget {
               width: 250.0,
               child: ElevatedButton(
                 onPressed: () {
-                  Get.off(DoctorApplicationSendScreen());
-                  // controller.adduser();
-                  // controller.firstnamecontroller.clear();
-                  // controller.lastnamecontroller.clear();
-                  // controller.emailcontroller.clear();
-                  // controller.passwordcontroller.clear();
-                  // controller.agecontroller.clear();
-                  // controller.placecontroller.clear();
-                  // controller.addresscontroller.clear();
-                  // controller.phonecontroller.clear();
-
-                  //  Get.off(UserProfileScreen());
+                 Get.off(const DoctorApplicationSendScreen());
+       
                 },
                 style: ElevatedButton.styleFrom(
                   foregroundColor: Colors.white, backgroundColor: Colors.black,
