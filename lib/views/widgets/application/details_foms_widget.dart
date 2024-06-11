@@ -27,15 +27,15 @@ class DeatalsFormWidget extends StatelessWidget {
                 minLines: 1,
                 maxLines: 5,
                 decoration: InputDecoration(
-                  contentPadding:
-                      const EdgeInsets.symmetric(vertical: 40.0, horizontal: 0.0),
+                  contentPadding: const EdgeInsets.symmetric(
+                      vertical: 40.0, horizontal: 0.0),
                   prefixIcon: const Icon(
                     Icons.account_box_rounded,
                     size: 20,
                   ),
                   hintText: 'Bio',
-                  border:
-                      OutlineInputBorder(borderRadius: BorderRadius.circular(25)),
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(25)),
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -59,8 +59,8 @@ class DeatalsFormWidget extends StatelessWidget {
                     size: 20,
                   ),
                   hintText: 'License Number',
-                  border:
-                      OutlineInputBorder(borderRadius: BorderRadius.circular(25)),
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(25)),
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -87,8 +87,8 @@ class DeatalsFormWidget extends StatelessWidget {
                     size: 20,
                   ),
                   hintText: 'Experience (optional)',
-                  border:
-                      OutlineInputBorder(borderRadius: BorderRadius.circular(25)),
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(25)),
                 ),
               ),
             ),
@@ -133,8 +133,8 @@ class DeatalsFormWidget extends StatelessWidget {
                         ),
                         IconButton(
                           onPressed: () {
-                            applicationController
-                                .getImage(applicationController.experienceimage);
+                            applicationController.getImage(
+                                applicationController.experienceimage);
                           },
                           icon: const Icon(Icons.image),
                         )
@@ -208,7 +208,8 @@ class DeatalsFormWidget extends StatelessWidget {
                     // Check if license image is uploaded
                     if (applicationController.licenseimage.value.isEmpty) {
                       isFormValid = false;
-                      Get.snackbar('Error', 'Please upload your license certificate',
+                      Get.snackbar(
+                          'Error', 'Please upload your license certificate',
                           snackPosition: SnackPosition.BOTTOM,
                           backgroundColor: Colors.red,
                           colorText: Colors.white);
@@ -216,7 +217,8 @@ class DeatalsFormWidget extends StatelessWidget {
 
                     if (isFormValid) {
                       // Optional: Upload experience image if selected
-                      if (applicationController.experienceimage.value.isNotEmpty) {
+                      if (applicationController
+                          .experienceimage.value.isNotEmpty) {
                         File imageFile =
                             File(applicationController.experienceimage.value);
                         String? imageUrl =
@@ -239,13 +241,14 @@ class DeatalsFormWidget extends StatelessWidget {
                       if (licenseImageUrl != null) {
                         applicationController.downloadlicenseUrl.value =
                             licenseImageUrl;
-                        print('License certificate uploaded successfully: $licenseImageUrl');
+                        print(
+                            'License certificate uploaded successfully: $licenseImageUrl');
                       } else {
                         print('Failed to upload license certificate');
                       }
 
                       await applicationController.sendapplication();
-                      
+
                       Get.offAll(const ApplicationSendMessageScreen());
                     }
                   }

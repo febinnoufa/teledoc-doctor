@@ -1,19 +1,27 @@
+import 'package:deledocdoctor/controllers/time/displaycontroller.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class ScheduledItem extends StatelessWidget {
   final String id;
   final String date;
   final String startTime;
   final String endTime;
-  final VoidCallback? onRemove;
+ // final String schedule;
+  //final VoidCallback? onRemove;
+ // final VoidCallback? onRemove2;
 
-  const ScheduledItem({
+   ScheduledItem({
     required this.id,
     required this.date,
     required this.startTime,
     required this.endTime,
-    this.onRemove,
+   // required this.schedule
+   // this.onRemove, 
+    //this.onRemove2,
   });
+
+   final DisplayController displayController = Get.put(DisplayController());
 
   @override
   Widget build(BuildContext context) {
@@ -46,8 +54,12 @@ class ScheduledItem extends StatelessWidget {
               ),
               const Spacer(),
               IconButton(
-                icon: Icon(Icons.delete, color: Colors.red),
-                onPressed: onRemove,
+                icon: const Icon(Icons.delete, color: Colors.red),
+                onPressed: () {
+                  // displayController.deleteSchedule(id);
+                   displayController.removeSchedule(id);
+                },
+               // onPressed: onRemove
               ),
             ],
           ),

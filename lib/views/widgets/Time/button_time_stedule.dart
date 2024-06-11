@@ -50,7 +50,7 @@ class TimeScheduleButtonWidget extends StatelessWidget {
             final startTime = timeController.startTime.value!.format(context);
             final endTime = timeController.endTime.value!.format(context);
 
-          //  displayController.addSchedule(selectedDate, startTime, endTime);
+            displayController.doctorsheduleadd(selectedDate, startTime, endTime);
             displayController.scheduleAdd(selectedDate, startTime, endTime);
 
             calendarController.selectedDay.value = null;

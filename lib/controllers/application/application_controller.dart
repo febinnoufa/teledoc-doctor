@@ -30,6 +30,7 @@ class ApplicationController extends GetxController {
   var downloadUrl = "".obs;
   var downloadexperianseUrl = "".obs;
   var downloadlicenseUrl = "".obs;
+  var loading = false.obs;
 
   Future<void> getImage(image) async {
     final pickedImage =
@@ -40,12 +41,14 @@ class ApplicationController extends GetxController {
 
   Future<String?> uploadImage(File image) async {
     try {
+      loading.value = true;
       String fileName = basename(image.path);
       Reference firebaseStorageRef =
           FirebaseStorage.instance.ref().child('uploads/$fileName');
       UploadTask uploadTask = firebaseStorageRef.putFile(image);
       TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => {});
       String downloadUrl = await taskSnapshot.ref.getDownloadURL();
+      loading.value = false;
 
       return downloadUrl;
     } catch (e) {

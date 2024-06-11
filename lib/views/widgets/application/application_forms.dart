@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart'; // Import for FilteringTextInputFormatter
 import 'package:get/get.dart';
 import 'package:deledocdoctor/controllers/details%20application/widgetcontroller.dart';
 import 'package:deledocdoctor/controllers/application/application_controller.dart';
@@ -34,10 +35,12 @@ class ApplicationFormsWidget extends StatelessWidget {
                       () => CircleAvatar(
                         radius: 65,
                         backgroundColor: Colors.black,
-                        backgroundImage:
-                            applicationController.imageTemporary.value.isNotEmpty
-                                ? FileImage(File(applicationController.imageTemporary.value))
-                                : const AssetImage('assets/profile.png') as ImageProvider,
+                        backgroundImage: applicationController
+                                .imageTemporary.value.isNotEmpty
+                            ? FileImage(File(
+                                applicationController.imageTemporary.value))
+                            : const AssetImage('assets/profile.png')
+                                as ImageProvider,
                       ),
                     ),
                   ),
@@ -99,6 +102,7 @@ class ApplicationFormsWidget extends StatelessWidget {
                       }
                       return null;
                     },
+                    numericOnly: true, // Restrict to numeric input only
                   ),
                   const SizedBox(height: 20),
                   Padding(
@@ -107,8 +111,8 @@ class ApplicationFormsWidget extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text("GENDER",
-                            style:
-                                TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold)),
                         const SizedBox(height: 10),
                         Row(
                           children: [
@@ -125,16 +129,17 @@ class ApplicationFormsWidget extends StatelessWidget {
                     child: ElevatedButton(
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
-                          if (applicationController.imageTemporary.value.isNotEmpty) {
-                            File imageFile =
-                                File(applicationController.imageTemporary.value);
-                            String? imageUrl =
-                                await applicationController.uploadImage(imageFile);
+                          if (applicationController
+                              .imageTemporary.value.isNotEmpty) {
+                            File imageFile = File(
+                                applicationController.imageTemporary.value);
+                            String? imageUrl = await applicationController
+                                .uploadImage(imageFile);
 
                             if (imageUrl != null) {
-                              applicationController.downloadUrl.value = imageUrl;
-                              print(
-                                  'Image uploaded successfully: $imageUrl');
+                              applicationController.downloadUrl.value =
+                                  imageUrl;
+                              print('Image uploaded successfully: $imageUrl');
                             } else {
                               print('Failed to upload image');
                               // Handle the error case here if needed
@@ -144,7 +149,8 @@ class ApplicationFormsWidget extends StatelessWidget {
                             // Handle the case where no image is selected
                           }
 
-                          if (genderController.selectedGender.value.isNotEmpty) {
+                          if (genderController
+                              .selectedGender.value.isNotEmpty) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text(
@@ -154,7 +160,8 @@ class ApplicationFormsWidget extends StatelessWidget {
                             Get.off(const ApplicatioDetailsScreen());
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Please select a gender')),
+                              const SnackBar(
+                                  content: Text('Please select a gender')),
                             );
                           }
                         }
@@ -169,7 +176,8 @@ class ApplicationFormsWidget extends StatelessWidget {
                             width: 3.0, // Change border thickness here
                           ),
                         ),
-                        minimumSize: const Size(250, 50), // Set minimum button size
+                        minimumSize:
+                            const Size(250, 50), // Set minimum button size
                       ),
                       child: const Text("NEXT"),
                     ),
@@ -188,12 +196,16 @@ class ApplicationFormsWidget extends StatelessWidget {
     required String hintText,
     required IconData icon,
     required String? Function(String?) validator,
+    bool numericOnly = false,
   }) {
     return Material(
       borderRadius: BorderRadius.circular(25),
       elevation: 10,
       child: TextFormField(
         controller: controller,
+        keyboardType: numericOnly ? TextInputType.number : TextInputType.text,
+        inputFormatters:
+            numericOnly ? [FilteringTextInputFormatter.digitsOnly] : null,
         decoration: InputDecoration(
           prefixIcon: Icon(icon, size: 20),
           hintText: hintText,

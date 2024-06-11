@@ -22,24 +22,41 @@ class DisplayController extends GetxController {
     }
   }
 
+  // Future<List<ScheduleItem>> _getUserSchedules() async {
+  //   User? currentUser = _auth.currentUser;
+  //   if (currentUser != null) {
+  //     QuerySnapshot querySnapshot = await _db
+  //         .collection('schedule')
+  //         .where('docId', isEqualTo: currentUser.uid)
+  //         .orderBy('createdAt', descending: true)
+  //         .get();
+
+  //     List<ScheduleItem> schedules = querySnapshot.docs.map((doc) {
+  //       return ScheduleItem.fromFirestore(doc);
+  //     }).toList();
+
+  //     return schedules;
+  //   } else {
+  //     throw Exception("No user is currently signed in.");
+  //   }
+  // }
+
   Future<List<ScheduleItem>> _getUserSchedules() async {
-    User? currentUser = _auth.currentUser;
-    if (currentUser != null) {
-      QuerySnapshot querySnapshot = await _db
-          .collection('schedule')
-          .where('docId', isEqualTo: currentUser.uid)
-          .orderBy('createdAt', descending: true)
-          .get();
-
-      List<ScheduleItem> schedules = querySnapshot.docs.map((doc) {
-        return ScheduleItem.fromFirestore(doc);
-      }).toList();
-
-      return schedules;
-    } else {
-      throw Exception("No user is currently signed in.");
-    }
+  User? currentUser = _auth.currentUser;
+  if (currentUser != null) {
+    QuerySnapshot snapshot = await _db
+        .collection("approveddoctors")
+        .doc(currentUser.uid)
+        .collection("shedules")
+        .orderBy('createdAt', descending: true)
+        .get();
+        
+    return snapshot.docs.map((doc) => ScheduleItem.fromFirestore(doc)).toList();
+  } else {
+    return [];
   }
+}
+
 
   void scheduleAdd(String date, String startTime, String endTime) async {
     User? currentUser = _auth.currentUser;
@@ -51,14 +68,49 @@ class DisplayController extends GetxController {
         'docId': currentUser.uid,
         'createdAt': FieldValue.serverTimestamp()
       });
-      await fetchUserSchedules(); // Refresh the schedule list after adding a new schedule
+      await fetchUserSchedules();
+    }
+  }
+
+  void deleteSchedule(String scheduleId) async {
+    User? currentUser = _auth.currentUser;
+    if (currentUser != null) {
+      await _db.collection("schedule").doc(scheduleId).delete();
+      await fetchUserSchedules();
+    }
+  }
+
+  void doctorsheduleadd(String date, String startTime, String endTime) async {
+    User? currentUser = _auth.currentUser;
+    if (currentUser != null) {
+      await _db
+          .collection("approveddoctors")
+          .doc(currentUser.uid)
+          .collection("shedules")
+          .doc()
+          .set({
+        'date': date,
+        'startTime': startTime,
+        'endTime': endTime,
+        'docId': currentUser.uid,
+        'createdAt': FieldValue.serverTimestamp()
+      });
+      await fetchUserSchedules();
     }
   }
 
   void removeSchedule(String scheduleId) async {
+    User? currentUser = _auth.currentUser;
     try {
+      await _db
+          .collection("approveddoctors")
+          .doc(currentUser!.uid)
+          .collection("shedules")
+          .doc(scheduleId)
+          .delete();
       await _db.collection("schedule").doc(scheduleId).delete();
-      await fetchUserSchedules(); // Refresh the schedule list after deleting a schedule
+
+      await fetchUserSchedules();
     } catch (e) {
       print("Error removing schedule: $e");
     }

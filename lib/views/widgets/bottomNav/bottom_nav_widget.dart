@@ -1,4 +1,6 @@
 import 'package:deledocdoctor/views/screens/Home/home.dart';
+import 'package:deledocdoctor/views/screens/Home/home_screen.dart';
+import 'package:deledocdoctor/views/screens/appointment/myappointment.dart';
 import 'package:deledocdoctor/views/screens/profile/profile_screen.dart';
 import 'package:deledocdoctor/views/screens/Time/time_schedule_screen.dart';
 
@@ -38,14 +40,15 @@ class _MyHomePageState extends State<BotomNavigationBar> {
             physics: const NeverScrollableScrollPhysics(),
             controller: pageController,
             children: <Widget>[
-              Container(
-                alignment: Alignment.center,
-                child: const Icon(
-                  Icons.favorite_rounded,
-                  size: 56,
-                  color: Color.fromARGB(255, 35, 10, 10),
-                ),
-              ),
+              HomeScreen(),
+              // Container(
+              //   alignment: Alignment.center,
+              //   child: const Icon(
+              //     Icons.favorite_rounded,
+              //     size: 56,
+              //     color: Color.fromARGB(255, 35, 10, 10),
+              //   ),
+              // ),
               // Container(
               //   alignment: Alignment.center,
               //   child: Icon(
@@ -55,7 +58,8 @@ class _MyHomePageState extends State<BotomNavigationBar> {
               //   ),
               // ),
               TimeSchedulingScreen(),
-              DoctorHomeScreen(),
+              MyAppointment(),
+             // DoctorHomeScreen(),
               DoctorDetailsPage(),
             ],
           ),
