@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class DisplayController extends GetxController {
   var schedules = <ScheduleItem>[].obs;
@@ -42,47 +43,80 @@ class DisplayController extends GetxController {
   // }
 
   Future<List<ScheduleItem>> _getUserSchedules() async {
-  User? currentUser = _auth.currentUser;
-  if (currentUser != null) {
-    QuerySnapshot snapshot = await _db
-        .collection("approveddoctors")
-        .doc(currentUser.uid)
-        .collection("shedules")
-        .orderBy('createdAt', descending: true)
-        .get();
-        
-    return snapshot.docs.map((doc) => ScheduleItem.fromFirestore(doc)).toList();
-  } else {
-    return [];
+    User? currentUser = _auth.currentUser;
+    if (currentUser != null) {
+      QuerySnapshot snapshot = await _db
+          .collection("approveddoctors")
+          .doc(currentUser.uid)
+          .collection("shedules")
+          .orderBy('createdAt', descending: true)
+          .get();
+
+      return snapshot.docs
+          .map((doc) => ScheduleItem.fromFirestore(doc))
+          .toList();
+    } else {
+      return [];
+    }
   }
+
+  //  scheduleAdd(String date, String startTime, String endTime) async {
+  //   User? currentUser = _auth.currentUser;
+  //   if (currentUser != null)  {
+  //     Map<String, bool> intervals =  splitTimeIntoIntervals(startTime, endTime);
+
+  //     await _db.collection("schedule").doc().set({
+  //       'date': date,
+  //       'startTime': startTime,
+  //       'endTime': endTime,
+  //       'docId': currentUser.uid,
+  //       'createdAt': FieldValue.serverTimestamp(),
+  //       'intervals': intervals
+  //     });
+
+  //     await fetchUserSchedules();
+  //   }
+  // }
+
+Map<String, bool> splitTimeIntoIntervals(String startTime, String endTime)  {
+  // Define the date format
+  final DateFormat timeFormat = DateFormat.Hm();
+  
+  // Parse the start and end times
+  final DateTime start = timeFormat.parse(startTime);
+  final DateTime end = timeFormat.parse(endTime);
+  
+  // Initialize an empty map to hold the intervals and their boolean values
+  final Map<String, bool> intervals = {};
+
+  // Initialize the current time to the start time
+  DateTime currentTime = start;
+
+  // Loop until the current time is less than the end time
+  while (currentTime.isBefore(end)) {
+    // Calculate the next interval time
+    final DateTime nextTime = currentTime.add(const Duration(minutes: 30));
+
+    // Create a key for the interval in the format HH:mm - HH:mm
+    final String intervalKey = '${timeFormat.format(currentTime)} - ${timeFormat.format(nextTime)}';
+
+    // Add the interval to the map with a default value of true
+    intervals[intervalKey] = true;
+
+    // Update the current time to the next interval time
+    currentTime = nextTime;
+  }
+
+  return intervals;
 }
 
 
-  void scheduleAdd(String date, String startTime, String endTime) async {
+   doctorsheduleadd(String date, String startTime, String endTime) async {
     User? currentUser = _auth.currentUser;
     if (currentUser != null) {
-      await _db.collection("schedule").doc().set({
-        'date': date,
-        'startTime': startTime,
-        'endTime': endTime,
-        'docId': currentUser.uid,
-        'createdAt': FieldValue.serverTimestamp()
-      });
-      await fetchUserSchedules();
-    }
-  }
 
-  void deleteSchedule(String scheduleId) async {
-    User? currentUser = _auth.currentUser;
-    if (currentUser != null) {
-      await _db.collection("schedule").doc(scheduleId).delete();
-      await fetchUserSchedules();
-    }
-  }
+        Map<String, bool> intervals = splitTimeIntoIntervals(startTime, endTime);
 
-  void doctorsheduleadd(String date, String startTime, String endTime) async {
-    User? currentUser = _auth.currentUser;
-    if (currentUser != null) {
       await _db
           .collection("approveddoctors")
           .doc(currentUser.uid)
@@ -93,12 +127,31 @@ class DisplayController extends GetxController {
         'startTime': startTime,
         'endTime': endTime,
         'docId': currentUser.uid,
+        'intervals': intervals,
         'createdAt': FieldValue.serverTimestamp()
       });
       await fetchUserSchedules();
     }
   }
 
+
+
+
+
+
+
+
+
+
+
+
+  void deleteSchedule(String scheduleId) async {
+    User? currentUser = _auth.currentUser;
+    if (currentUser != null) {
+      await _db.collection("schedule").doc(scheduleId).delete();
+      await fetchUserSchedules();
+    }
+  }
   void removeSchedule(String scheduleId) async {
     User? currentUser = _auth.currentUser;
     try {

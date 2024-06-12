@@ -8,6 +8,7 @@ class Appointment {
   final DateTime createdAt;
   final String date;
   final String time;
+  final String image;
 
   Appointment({
     required this.appointmentId,
@@ -19,6 +20,7 @@ class Appointment {
     required this.createdAt,
     required this.date,
     required this.time,
+    required this.image
   });
 
   factory Appointment.fromFirestore( doc) {
@@ -33,6 +35,7 @@ class Appointment {
       createdAt: (data['created_at'] ).toDate(),
       date: data['date'] ?? '',
       time: data['time'] ?? '',
+      image: data['image'] ?? '',
     );
   }
 }

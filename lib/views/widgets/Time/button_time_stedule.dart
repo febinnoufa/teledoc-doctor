@@ -23,7 +23,7 @@ class TimeScheduleButtonWidget extends StatelessWidget {
             backgroundColor: const Color.fromARGB(255, 98, 186, 126),
             elevation: 0,
           ),
-          onPressed: () {
+          onPressed: () async{
             if (calendarController.selectedDay.value == null) {
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
@@ -50,8 +50,8 @@ class TimeScheduleButtonWidget extends StatelessWidget {
             final startTime = timeController.startTime.value!.format(context);
             final endTime = timeController.endTime.value!.format(context);
 
-            displayController.doctorsheduleadd(selectedDate, startTime, endTime);
-            displayController.scheduleAdd(selectedDate, startTime, endTime);
+          await  displayController.doctorsheduleadd(selectedDate, startTime, endTime);
+        //   await displayController.scheduleAdd(selectedDate, startTime, endTime);
 
             calendarController.selectedDay.value = null;
             timeController.startTime.value = null;
