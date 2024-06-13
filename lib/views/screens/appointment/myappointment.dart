@@ -36,9 +36,9 @@ class MyAppointment extends StatelessWidget {
                     indicatorColor: greenColor,
                     unselectedLabelColor: Colors.white,
                     labelColor: greenColor,
-                    tabs: [
-                      const Tab(text: 'Upcoming'),
-                      const Tab(text: 'Past'),
+                    tabs: const [
+                      Tab(text: 'Upcoming'),
+                      Tab(text: 'Past'),
                      // Tab(text: 'Cancelled'),
                     ],
                   ),
@@ -49,7 +49,7 @@ class MyAppointment extends StatelessWidget {
                   children: [
                     UpcomingAppointment(),
                   //  Center(child: Text('Upcoming Appointments')),
-                    Center(child: Text('Past Appointments')),
+                    const Center(child: Text('Past Appointments')),
                 //    Center(child: Text('Cancelled Appointments')),
                   ],
                 ),

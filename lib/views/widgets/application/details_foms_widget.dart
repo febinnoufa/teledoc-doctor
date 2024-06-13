@@ -226,10 +226,10 @@ class DeatalsFormWidget extends StatelessWidget {
                         if (imageUrl != null) {
                           applicationController.downloadexperianseUrl.value =
                               imageUrl;
-                          print(
-                              'Experience certificate uploaded successfully: $imageUrl');
+                        //  print(
+                         //     'Experience certificate uploaded successfully: $imageUrl');
                         } else {
-                          print('Failed to upload experience certificate');
+                       //   print('Failed to upload experience certificate');
                         }
                       }
 
@@ -241,10 +241,10 @@ class DeatalsFormWidget extends StatelessWidget {
                       if (licenseImageUrl != null) {
                         applicationController.downloadlicenseUrl.value =
                             licenseImageUrl;
-                        print(
-                            'License certificate uploaded successfully: $licenseImageUrl');
+                      //  print(
+                          //  'License certificate uploaded successfully: $licenseImageUrl');
                       } else {
-                        print('Failed to upload license certificate');
+                      //  print('Failed to upload license certificate');
                       }
 
                       await applicationController.sendapplication();
@@ -259,11 +259,11 @@ class DeatalsFormWidget extends StatelessWidget {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(25.0),
                     side: const BorderSide(
-                      color: Colors.green, // Change border color here
-                      width: 3.0, // Change border thickness here
+                      color: Colors.green,
+                      width: 3.0, 
                     ),
                   ),
-                  minimumSize: const Size(100, 0), // Set minimum button size
+                  minimumSize: const Size(100, 0),
                 ),
                 child: const Text("SEND"),
               ),

@@ -1,4 +1,6 @@
 
+// ignore_for_file: depend_on_referenced_packages
+
 import 'package:deledocdoctor/views/screens/signin/login_screen.dart';
 import 'package:deledocdoctor/views/widgets/bottomNav/bottom_nav_widget.dart';
 import 'package:flutter/material.dart';

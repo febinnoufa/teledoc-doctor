@@ -1,7 +1,6 @@
 import 'package:deledocdoctor/const/const.dart';
 import 'package:deledocdoctor/controllers/appointments/appointment_controller.dart';
 import 'package:deledocdoctor/models/appointment.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

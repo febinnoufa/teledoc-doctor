@@ -1,3 +1,5 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'package:deledocdoctor/models/appointment.dart';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -14,6 +16,7 @@ class AppointmentController extends GetxController {
 
     return querySnapshot.docs.map((doc) => Appointment.fromFirestore(doc)).toList();
   } catch (e) {
+    // ignore: avoid_print
     print('Error fetching appointments: $e');
     return [];
   }

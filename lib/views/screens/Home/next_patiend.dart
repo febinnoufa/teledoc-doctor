@@ -2,8 +2,7 @@ import 'package:deledocdoctor/controllers/appointments/appointment_controller.da
 import 'package:deledocdoctor/models/appointment.dart';
 import 'package:deledocdoctor/views/widgets/home/patient_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:deledocdoctor/const/const.dart';
-import 'package:get/get.dart'; // Ensure this path is correct
+import 'package:get/get.dart'; 
 
 class NextPatientWidget extends StatelessWidget {
   NextPatientWidget({super.key});

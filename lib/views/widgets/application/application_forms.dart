@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart'; // Import for FilteringTextInputFormatter
+import 'package:flutter/services.dart'; 
 import 'package:get/get.dart';
 import 'package:deledocdoctor/controllers/details%20application/widgetcontroller.dart';
 import 'package:deledocdoctor/controllers/application/application_controller.dart';
@@ -139,18 +139,21 @@ class ApplicationFormsWidget extends StatelessWidget {
                             if (imageUrl != null) {
                               applicationController.downloadUrl.value =
                                   imageUrl;
+                              // ignore: avoid_print
                               print('Image uploaded successfully: $imageUrl');
                             } else {
+                              // ignore: avoid_print
                               print('Failed to upload image');
-                              // Handle the error case here if needed
+                            
                             }
                           } else {
-                            print('No image selected');
-                            // Handle the case where no image is selected
+                           // print('No image selected');
+                           
                           }
 
                           if (genderController
                               .selectedGender.value.isNotEmpty) {
+                            // ignore: use_build_context_synchronously
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text(
@@ -159,6 +162,7 @@ class ApplicationFormsWidget extends StatelessWidget {
                             );
                             Get.off(const ApplicatioDetailsScreen());
                           } else {
+                            // ignore: use_build_context_synchronously
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                   content: Text('Please select a gender')),
@@ -172,12 +176,12 @@ class ApplicationFormsWidget extends StatelessWidget {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(25.0),
                           side: const BorderSide(
-                            color: Colors.green, // Change border color here
-                            width: 3.0, // Change border thickness here
+                            color: Colors.green, 
+                            width: 3.0,
                           ),
                         ),
                         minimumSize:
-                            const Size(250, 50), // Set minimum button size
+                            const Size(250, 50), 
                       ),
                       child: const Text("NEXT"),
                     ),

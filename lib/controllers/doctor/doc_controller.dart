@@ -1,3 +1,5 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'package:deledocdoctor/models/model_doc.dart';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -40,19 +42,10 @@ class DoctorController extends GetxController {
       }
     } catch (e) {
       // Handle error
+      // ignore: avoid_print
       print(e);
     }
   }
 
 
-  // addSchedule(String date, String startTime, String endTime)async{
-  //    User? currentUser = _auth.currentUser;
-  //   _db.collection("approveddoctors").doc(currentUser!.uid).collection("schedules").add({
-  //     'date':date,
-  //     'startTime':startTime,
-  //     'endTime':endTime,
-  //     'createdAt':FieldValue.serverTimestamp(),
-  //   });
-
-  // }
 }

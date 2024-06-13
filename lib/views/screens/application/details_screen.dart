@@ -20,7 +20,7 @@ class ApplicatioDetailsScreen extends StatelessWidget {
           children: [
             SpesilstSelectionScreen(),
              DeatalsFormWidget()
-           // ApplicationFormsWidget()
+      
           ],
           
         ),

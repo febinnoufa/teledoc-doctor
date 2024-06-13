@@ -1,3 +1,5 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
@@ -19,28 +21,10 @@ class DisplayController extends GetxController {
       List<ScheduleItem> fetchedSchedules = await _getUserSchedules();
       schedules.assignAll(fetchedSchedules);
     } catch (e) {
+      // ignore: avoid_print
       print("Error fetching schedules: $e");
     }
   }
-
-  // Future<List<ScheduleItem>> _getUserSchedules() async {
-  //   User? currentUser = _auth.currentUser;
-  //   if (currentUser != null) {
-  //     QuerySnapshot querySnapshot = await _db
-  //         .collection('schedule')
-  //         .where('docId', isEqualTo: currentUser.uid)
-  //         .orderBy('createdAt', descending: true)
-  //         .get();
-
-  //     List<ScheduleItem> schedules = querySnapshot.docs.map((doc) {
-  //       return ScheduleItem.fromFirestore(doc);
-  //     }).toList();
-
-  //     return schedules;
-  //   } else {
-  //     throw Exception("No user is currently signed in.");
-  //   }
-  // }
 
   Future<List<ScheduleItem>> _getUserSchedules() async {
     User? currentUser = _auth.currentUser;
@@ -60,68 +44,40 @@ class DisplayController extends GetxController {
     }
   }
 
-  //  scheduleAdd(String date, String startTime, String endTime) async {
-  //   User? currentUser = _auth.currentUser;
-  //   if (currentUser != null)  {
-  //     Map<String, bool> intervals =  splitTimeIntoIntervals(startTime, endTime);
+  Map<String, bool> splitTimeIntoIntervals(String startTime, String endTime) {
+    final DateFormat inputTimeFormat = DateFormat('h:mm a');
+    final DateFormat outputTimeFormat = DateFormat('h:mm a');
 
-  //     await _db.collection("schedule").doc().set({
-  //       'date': date,
-  //       'startTime': startTime,
-  //       'endTime': endTime,
-  //       'docId': currentUser.uid,
-  //       'createdAt': FieldValue.serverTimestamp(),
-  //       'intervals': intervals
-  //     });
+    final DateTime start = inputTimeFormat.parse(startTime);
+    final DateTime end = inputTimeFormat.parse(endTime);
 
-  //     await fetchUserSchedules();
-  //   }
-  // }
+    final Map<String, bool> intervals = {};
 
-Map<String, bool> splitTimeIntoIntervals(String startTime, String endTime)  {
-  // Define the date format
-  final DateFormat timeFormat = DateFormat.Hm();
-  
-  // Parse the start and end times
-  final DateTime start = timeFormat.parse(startTime);
-  final DateTime end = timeFormat.parse(endTime);
-  
-  // Initialize an empty map to hold the intervals and their boolean values
-  final Map<String, bool> intervals = {};
+    DateTime currentTime = start;
 
-  // Initialize the current time to the start time
-  DateTime currentTime = start;
+    while (currentTime.isBefore(end)) {
+      final DateTime nextTime = currentTime.add(const Duration(minutes: 30));
 
-  // Loop until the current time is less than the end time
-  while (currentTime.isBefore(end)) {
-    // Calculate the next interval time
-    final DateTime nextTime = currentTime.add(const Duration(minutes: 30));
+      final String intervalKey = outputTimeFormat.format(currentTime);
 
-    // Create a key for the interval in the format HH:mm - HH:mm
-    final String intervalKey = '${timeFormat.format(currentTime)} - ${timeFormat.format(nextTime)}';
+      intervals[intervalKey] = true;
 
-    // Add the interval to the map with a default value of true
-    intervals[intervalKey] = true;
+      currentTime = nextTime;
+    }
 
-    // Update the current time to the next interval time
-    currentTime = nextTime;
+    return intervals;
   }
 
-  return intervals;
-}
-
-
-   doctorsheduleadd(String date, String startTime, String endTime) async {
+  doctorsheduleadd(String date, String startTime, String endTime) async {
     User? currentUser = _auth.currentUser;
     if (currentUser != null) {
-
-        Map<String, bool> intervals = splitTimeIntoIntervals(startTime, endTime);
+      Map<String, bool> intervals = splitTimeIntoIntervals(startTime, endTime);
 
       await _db
           .collection("approveddoctors")
           .doc(currentUser.uid)
           .collection("shedules")
-          .doc()
+          .doc(date)
           .set({
         'date': date,
         'startTime': startTime,
@@ -134,17 +90,6 @@ Map<String, bool> splitTimeIntoIntervals(String startTime, String endTime)  {
     }
   }
 
-
-
-
-
-
-
-
-
-
-
-
   void deleteSchedule(String scheduleId) async {
     User? currentUser = _auth.currentUser;
     if (currentUser != null) {
@@ -152,6 +97,7 @@ Map<String, bool> splitTimeIntoIntervals(String startTime, String endTime)  {
       await fetchUserSchedules();
     }
   }
+
   void removeSchedule(String scheduleId) async {
     User? currentUser = _auth.currentUser;
     try {
@@ -165,6 +111,7 @@ Map<String, bool> splitTimeIntoIntervals(String startTime, String endTime)  {
 
       await fetchUserSchedules();
     } catch (e) {
+      // ignore: avoid_print
       print("Error removing schedule: $e");
     }
   }

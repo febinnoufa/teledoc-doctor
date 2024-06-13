@@ -19,8 +19,8 @@ class ApplicationSendMessageScreen extends StatelessWidget {
         ),
         body:   Column(
           children: [
-            ApplicationSendMassageImageWidgwt(),
-           ApplicationSendMassageWidget(),
+            const ApplicationSendMassageImageWidgwt(),
+           const ApplicationSendMassageWidget(),
 
 
            const SizedBox(height: 60,),
