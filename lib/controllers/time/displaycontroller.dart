@@ -59,8 +59,9 @@ class DisplayController extends GetxController {
       final DateTime nextTime = currentTime.add(const Duration(minutes: 30));
 
       final String intervalKey = outputTimeFormat.format(currentTime);
+      final time= int.parse(intervalKey.split(":").first)<10 ? "0$intervalKey" : intervalKey;
 
-      intervals[intervalKey] = true;
+      intervals[time] = true;
 
       currentTime = nextTime;
     }

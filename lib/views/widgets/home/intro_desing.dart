@@ -1,5 +1,6 @@
 import 'package:deledocdoctor/const/const.dart';
 import 'package:deledocdoctor/controllers/doctor/doc_controller.dart';
+import 'package:deledocdoctor/views/screens/chating/chat_home.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -10,7 +11,7 @@ class HomeIntroDesgn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 250, // Increased height to accommodate the search field
+      height: 250, 
       width: double.infinity,
       decoration: BoxDecoration(
         color: greenColor,
@@ -41,7 +42,11 @@ class HomeIntroDesgn extends StatelessWidget {
                     color: Colors.black,
                   ),
                 ),
-                const Icon(Icons.message)
+                InkWell(
+                  onTap: () {
+                    Get.to(const ChatingHomeScreen());
+                  },
+                  child: const Icon(Icons.message))
               ],
             ),
             const SizedBox(

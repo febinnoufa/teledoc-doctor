@@ -1,5 +1,4 @@
 import 'package:deledocdoctor/const/const.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class PatientWidget extends StatelessWidget {
@@ -39,7 +38,7 @@ class PatientWidget extends StatelessWidget {
                                   children: [
                                     CircleAvatar(
                                       radius: 27,
-                                      backgroundImage: NetworkImage(appointment.image), // Replace with actual image
+                                      backgroundImage: NetworkImage(appointment.image), 
                                     ),
                                     const SizedBox(height: 11),
                                     Text(
@@ -57,7 +56,7 @@ class PatientWidget extends StatelessWidget {
                               height: 38,
                               width: 190,
                               decoration: BoxDecoration(
-                                color: greenColor, // Replace with your actual color
+                                color: greenColor,
                                 borderRadius: const BorderRadius.only(
                                   bottomLeft: Radius.circular(15),
                                   bottomRight: Radius.circular(15),
