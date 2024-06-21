@@ -9,6 +9,7 @@ class UserModel {
   int? age;
   int? phonenumber;
   String? password;
+  String? id;
 
   UserModel({
     this.firstname,
@@ -20,6 +21,8 @@ class UserModel {
     this.age,
     this.phonenumber,
     this.password,
+    this.id
+
   });
 
   Map<String, dynamic> toMap() {
@@ -33,6 +36,7 @@ class UserModel {
       'age': age,
       'phonenumber': phonenumber,
       'password': password,
+      'id':id
     };
   }
 
@@ -47,6 +51,7 @@ class UserModel {
       age: map['age'],
       phonenumber: map['phonenumber'],
       password: map['password'],
+      id:map['id']
     );
   }
 }
