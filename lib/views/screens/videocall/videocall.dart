@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
+import 'package:deledocdoctor/views/screens/prescription/prescriptopn.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 const appId = "842fdaf18994441f843efc88c021bd09";
@@ -9,12 +11,15 @@ class VideoCallScreen extends StatefulWidget {
   final String channel;
   final String token;
   final String  uid;  // Unique ID for the user
+  final data;
+  final String name;
 
   const VideoCallScreen({
     Key? key,
     required this.channel,
     required this.token,
     required this.uid,
+     this.data, required this.name,
   }) : super(key: key);
 
   @override
@@ -122,7 +127,9 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
             ),
           ),
           RawMaterialButton(
-            onPressed: () => _onCallEnd(context),
+            onPressed: () { _onCallEnd(context);
+            Get.to(PrescriptionScreen(userId:widget.uid ,name: widget.name,));
+            },
             shape: const CircleBorder(),
             elevation: 2.0,
             fillColor: Colors.redAccent,

@@ -1,5 +1,6 @@
 import 'package:deledocdoctor/const/const.dart';
 import 'package:deledocdoctor/views/widgets/appointment/appointment.dart';
+import 'package:deledocdoctor/views/widgets/appointment/past.dart';
 import 'package:flutter/material.dart';
 
 class MyAppointment extends StatelessWidget {
@@ -48,8 +49,9 @@ class MyAppointment extends StatelessWidget {
                 child: TabBarView(
                   children: [
                     UpcomingAppointment(),
+                    PastAppointments()
                   //  Center(child: Text('Upcoming Appointments')),
-                    const Center(child: Text('Past Appointments')),
+                   // const Center(child: Text('Past Appointments')),
                 //    Center(child: Text('Cancelled Appointments')),
                   ],
                 ),

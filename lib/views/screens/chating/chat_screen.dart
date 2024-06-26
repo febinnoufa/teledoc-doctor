@@ -1,20 +1,20 @@
 // chat_screen.dart (Doctor Side)
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:deledocdoctor/views/screens/videocall/uikit.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:deledocdoctor/controllers/message/message_controller.dart';
-import 'package:deledocdoctor/models/users.dart';
-import 'package:deledocdoctor/views/screens/videocall/videocall.dart';
 
-import 'package:http/http.dart' as http;
 
 class ChatScreen extends StatefulWidget {
-  final UserModel receiverPatient;
+  final  receiverPatient;
+ 
+  final name;
+  final id;
 
-  const ChatScreen({super.key, required this.receiverPatient});
+  const ChatScreen({super.key,required this.name,required this.id,required this.receiverPatient});
 
   @override
   State<ChatScreen> createState() => _ChatScreenState();
@@ -31,8 +31,6 @@ class _ChatScreenState extends State<ChatScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _scrollToBottom();
     });
-
-   
   }
 
   @override
@@ -50,16 +48,12 @@ class _ChatScreenState extends State<ChatScreen> {
   void sendMessage() async {
     if (_messagecontroller.text.isNotEmpty) {
       await chatingcontroller.sendMessage(
-          widget.receiverPatient.id.toString(), _messagecontroller.text);
+          widget.id.toString(), _messagecontroller.text);
 
       _messagecontroller.clear();
       _scrollToBottom();
     }
   }
-
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -69,9 +63,34 @@ class _ChatScreenState extends State<ChatScreen> {
         elevation: 0,
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
-        title: Text("${widget.receiverPatient.firstname}"),
+        title: Text("${widget.name}"),
         centerTitle: true,
-      ),
+        actions: [
+            IconButton(
+            icon: const Icon(Icons.video_call),
+            onPressed: () {
+            
+              Get.to(VideoCallScreenUikit(name:widget.name,uid:   widget.id));
+              // Get.to(VideoCallScreen(
+              //   name: widget.name,
+              //  // data: ,
+              //     channel: "fluttering",
+              //     token:
+              //         "007eJxTYDiy8b7/NSbH+0+qM/ZMYp9YfbctQzDB9aznXPbG5vi2n38UGCxMjNJSEtMMLSwtTUxMDNMsTIxT05ItLJINjAyTUgwsHZuK0hoCGRmaEzMZGKEQxOdiSMspLSlJLcrMS2dgAABxECKa",
+              //     uid: widget.id.toString()));
+              //   _initiateVideoCall;
+            },
+            // onPressed: () {
+            //   Navigator.push(
+            //     context,
+            //     MaterialPageRoute(
+            //       builder: (context) => VideoCallScreen(
+            //           receiverId: widget.receiverPatient.id.toString()),
+            //     ),
+            //   );
+            // },
+          ),
+        ],      ),
       body: Column(
         children: [
           const SizedBox(height: 10),
@@ -85,7 +104,7 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget _buildMessageList() {
     return StreamBuilder(
       stream: chatingcontroller.getMessages(
-          widget.receiverPatient.id.toString(),
+          widget.id.toString(),
           FirebaseAuth.instance.currentUser!.uid),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
@@ -179,17 +198,7 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
           ),
           IconButton(icon: const Icon(Icons.send), onPressed: sendMessage),
-          IconButton(
-            icon: const Icon(Icons.video_call),
-            onPressed: () {
-              Get.to(VideoCallScreen(
-                  channel: "fluttering",
-                  token:
-                      "007eJxTYDiy8b7/NSbH+0+qM/ZMYp9YfbctQzDB9aznXPbG5vi2n38UGCxMjNJSEtMMLSwtTUxMDNMsTIxT05ItLJINjAyTUgwsHZuK0hoCGRmaEzMZGKEQxOdiSMspLSlJLcrMS2dgAABxECKa",
-                  uid: widget.receiverPatient.id.toString()));
-              //   _initiateVideoCall;
-            },
-          ),
+        
         ],
       ),
     );

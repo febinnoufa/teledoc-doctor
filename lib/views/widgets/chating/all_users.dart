@@ -69,7 +69,7 @@ class ChatingAllUsers extends StatelessWidget {
                       //  trailing: Text(doctor.lastMessageTime ?? 'No Time'),
                       onTap: () {
                         // Navigate to doctor details or chat screen
-                        Get.to(() => ChatScreen(receiverPatient: user));
+                        Get.to(() => ChatScreen(id: user.id,name: user.firstname,receiverPatient:users ,));
                       },
                     ),
                     const SizedBox(height: 5),

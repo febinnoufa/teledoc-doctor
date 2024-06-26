@@ -11,12 +11,14 @@ class IntroScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return const SafeArea(child: Scaffold(
       backgroundColor: Color.fromARGB(255, 187, 243, 188),
-      body: Column(
-        children: [
-          SendApplicasionWidget(),
-          LoginOptionWidget()
-
-        ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            SendApplicasionWidget(),
+            LoginOptionWidget()
+      
+          ],
+        ),
       ),
     ));
   }

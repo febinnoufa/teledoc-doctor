@@ -1,20 +1,21 @@
 import 'package:deledocdoctor/const/const.dart';
 import 'package:deledocdoctor/controllers/appointments/appointment_controller.dart';
 import 'package:deledocdoctor/models/appointment.dart';
-import 'package:deledocdoctor/models/users.dart';
-import 'package:deledocdoctor/views/screens/chating/chat_screen.dart';
+import 'package:deledocdoctor/views/screens/prescription/showall_medicin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
-class UpcomingAppointment extends StatelessWidget {
-  UpcomingAppointment({super.key});
+class PastAppointments extends StatelessWidget {
+  PastAppointments({super.key});
+
   final AppointmentController cntr = Get.put(AppointmentController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: FutureBuilder<List<Appointment>>(
-        future: cntr.fetchAppointmentsForDoctor(),
+        future: cntr.fetchAppointmentsPastForDoctor(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -96,11 +97,7 @@ class UpcomingAppointment extends StatelessWidget {
                                         onPressed: () {
                                           cntr.appointmentId =
                                               appointment.appointmentId;
-                                          Get.to(ChatScreen(
-                                            id: appointment.userId,
-                                            name: appointment.patientName,
-                                            receiverPatient: appointment,
-                                          ));
+                                          //  Get.to(ChatScreen(id: appointment.userId,name: appointment.patientName,receiverPatient: appointment, ));
                                         },
                                         icon: const Icon(Icons.message))
                                   ],
@@ -127,39 +124,44 @@ class UpcomingAppointment extends StatelessWidget {
                                     color: Colors.black,
                                     borderRadius: BorderRadius.circular(20)),
                                 height: 35,
-                                width: 100,
-                                child: Center(
-                                    child: Text(
-                                  appointment.date,
-                                  style: const TextStyle(color: Colors.white),
+                                width: 200,
+                                child:  Center(
+                                    child: InkWell(
+                                      onTap: () {
+                                        Get.to(SHowAllDataInPrescription(id: appointment.appointmentId));
+                                      },
+                                  child: Text(
+                                    "Show Prescription",
+                                    style: TextStyle(color: Colors.white),
+                                  ),
                                 )),
                               ),
-                              Container(
-                                decoration: BoxDecoration(
-                                    color: Colors.black,
-                                    borderRadius: BorderRadius.circular(20)),
-                                height: 35,
-                                width: 100,
-                                child: Center(
-                                    child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    const Icon(
-                                      Icons.timer,
-                                      color: Colors.white,
-                                      size: 17,
-                                    ),
-                                    const SizedBox(
-                                      width: 5,
-                                    ),
-                                    Text(
-                                      appointment.time,
-                                      style:
-                                          const TextStyle(color: Colors.white),
-                                    ),
-                                  ],
-                                )),
-                              ),
+                              // Container(
+                              //   decoration: BoxDecoration(
+                              //       color: Colors.black,
+                              //       borderRadius: BorderRadius.circular(20)),
+                              //   height: 35,
+                              //   width: 100,
+                              //   child: Center(
+                              //       child: Row(
+                              //     mainAxisAlignment: MainAxisAlignment.center,
+                              //     children: [
+                              //       const Icon(
+                              //         Icons.timer,
+                              //         color: Colors.white,
+                              //         size: 17,
+                              //       ),
+                              //       const SizedBox(
+                              //         width: 5,
+                              //       ),
+                              //       Text(
+                              //         appointment.time,
+                              //         style:
+                              //             const TextStyle(color: Colors.white),
+                              //       ),
+                              //     ],
+                              //   )),
+                              // ),
                             ],
                           ),
                           const SizedBox(height: 10),

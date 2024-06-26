@@ -36,10 +36,19 @@ class PatientWidget extends StatelessWidget {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    CircleAvatar(
-                                      radius: 27,
-                                      backgroundImage: NetworkImage(appointment.image), 
-                                    ),
+                                    FadeInImage.assetNetwork(
+                        placeholder: 'https://media.istockphoto.com/id/1327592506/vector/default-avatar-photo-placeholder-icon-grey-profile-picture-business-man.jpg?s=612x612&w=0&k=20&c=BpR0FVaEa5F24GIw7K8nMWiiGmbb8qmhfkpXcp1dhQg=', // Path to your placeholder image
+                        image: appointment.image,
+                        imageErrorBuilder: (context, error, stackTrace) {
+                          return CircleAvatar(
+                            radius: 27,
+                            backgroundImage: NetworkImage('https://media.istockphoto.com/id/1327592506/vector/default-avatar-photo-placeholder-icon-grey-profile-picture-business-man.jpg?s=612x612&w=0&k=20&c=BpR0FVaEa5F24GIw7K8nMWiiGmbb8qmhfkpXcp1dhQg='), // Path to your placeholder image
+                          );
+                        },
+                        fit: BoxFit.cover,
+                        width: 54, // Adjust size as needed
+                        height: 54, // Adjust size as needed
+                      ),
                                     const SizedBox(height: 11),
                                     Text(
                                       appointment.patientName,
