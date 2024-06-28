@@ -4,14 +4,28 @@ import 'package:deledocdoctor/views/screens/chating/chat_home.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class HomeIntroDesgn extends StatelessWidget {
+class HomeIntroDesgn extends StatefulWidget {
   HomeIntroDesgn({super.key});
+
+  @override
+  State<HomeIntroDesgn> createState() => _HomeIntroDesgnState();
+}
+
+class _HomeIntroDesgnState extends State<HomeIntroDesgn> {
   final DoctorController doctorController = Get.put(DoctorController());
 
   @override
+  void initState() {
+    // TODO: implement initState
+    doctorController.fetchDoctorDetails();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    doctorController.fetchDoctorDetails();
     return Container(
-      height: 250, 
+      height: 250,
       width: double.infinity,
       decoration: BoxDecoration(
         color: greenColor,
@@ -28,10 +42,21 @@ class HomeIntroDesgn extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                CircleAvatar(
-                  radius: 25,
-                  backgroundImage:
-                      NetworkImage(doctorController.doctor.value.profile),
+                ClipOval(
+                  child: FadeInImage.assetNetwork(
+                    placeholder: "assets/profile.png",
+                    image: doctorController.doctor.value.profile,
+                    height: 50,
+                    width: 50,
+                    fit: BoxFit.cover,
+                    imageErrorBuilder: (context, error, stackTrace) {
+                      return const CircleAvatar(
+                        radius: 25,
+                        backgroundImage: NetworkImage(
+                            'https://media.istockphoto.com/id/1327592506/vector/default-avatar-photo-placeholder-icon-grey-profile-picture-business-man.jpg?s=612x612&w=0&k=20&c=BpR0FVaEa5F24GIw7K8nMWiiGmbb8qmhfkpXcp1dhQg='), // Path to your placeholder image
+                      );
+                    },
+                  ),
                 ),
                 const Text(
                   "TELE DOC",
@@ -46,9 +71,11 @@ class HomeIntroDesgn extends StatelessWidget {
                   onTap: () {
                     Get.to(const ChatingHomeScreen());
                   },
-                  child: const Icon(Icons.message))
+                  child: const Icon(Icons.message),
+                ),
               ],
             ),
+
             const SizedBox(
               height: 30,
             ),

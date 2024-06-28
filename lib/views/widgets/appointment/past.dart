@@ -52,24 +52,36 @@ class PastAppointments extends StatelessWidget {
                             //  crossAxisAlignment: CrossAxisAlignment.center,
 
                             children: [
-                              FadeInImage.assetNetwork(
-                                placeholder:
-                                    'https://media.istockphoto.com/id/1327592506/vector/default-avatar-photo-placeholder-icon-grey-profile-picture-business-man.jpg?s=612x612&w=0&k=20&c=BpR0FVaEa5F24GIw7K8nMWiiGmbb8qmhfkpXcp1dhQg=', // Path to your placeholder image
-                                image: appointment.image,
-                                imageErrorBuilder:
-                                    (context, error, stackTrace) {
-                                  return const CircleAvatar(
-                                    radius: 25,
-                                    backgroundImage: NetworkImage(
-                                        'https://media.istockphoto.com/id/1327592506/vector/default-avatar-photo-placeholder-icon-grey-profile-picture-business-man.jpg?s=612x612&w=0&k=20&c=BpR0FVaEa5F24GIw7K8nMWiiGmbb8qmhfkpXcp1dhQg='), // Path to your placeholder image
-                                  );
-                                },
-                                fit: BoxFit.cover,
-                                width: 54, // Adjust size as needed
-                                height: 54, // Adjust size as needed
+                              Material(
+                                elevation: 4.0,
+                                borderRadius: BorderRadius.circular(
+                                    8.0), // Adjust the radius as needed
+                                clipBehavior: Clip.antiAlias,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(
+                                      8.0), // Same as the Material border radius
+                                  child: FadeInImage.assetNetwork(
+                                    placeholder:
+                                        'assets/profile.png', // Path to your placeholder image
+                                    image: appointment.image,
+
+                                    fit: BoxFit.cover,
+                                    width: 54, // Adjust size as needed
+                                    height: 54, // Adjust size as needed
+                                    imageErrorBuilder:
+                                        (context, error, stackTrace) {
+                                      return const CircleAvatar(
+                                        radius: 25,
+                                        backgroundImage: NetworkImage(
+                                            'https://media.istockphoto.com/id/1327592506/vector/default-avatar-photo-placeholder-icon-grey-profile-picture-business-man.jpg?s=612x612&w=0&k=20&c=BpR0FVaEa5F24GIw7K8nMWiiGmbb8qmhfkpXcp1dhQg='), // Path to your placeholder image
+                                      );
+                                    },
+                                  ),
+                                ),
                               ),
+
                               const SizedBox(
-                                width: 10,
+                                width: 15,
                               ),
                               Container(
                                 width: 200,
@@ -78,6 +90,8 @@ class PastAppointments extends StatelessWidget {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           appointment.patientName,
@@ -125,11 +139,12 @@ class PastAppointments extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(20)),
                                 height: 35,
                                 width: 200,
-                                child:  Center(
+                                child: Center(
                                     child: InkWell(
-                                      onTap: () {
-                                        Get.to(SHowAllDataInPrescription(id: appointment.appointmentId));
-                                      },
+                                  onTap: () {
+                                    Get.to(SHowAllDataInPrescription(
+                                        id: appointment.appointmentId));
+                                  },
                                   child: Text(
                                     "Show Prescription",
                                     style: TextStyle(color: Colors.white),

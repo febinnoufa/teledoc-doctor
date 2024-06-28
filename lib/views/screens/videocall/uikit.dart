@@ -73,7 +73,7 @@ class _VideoCallScreenState extends State<VideoCallScreenUikit> {
 
   @override
   void dispose() {
-    client.engine.leaveChannel();
+    client.engine?.leaveChannel();
     super.dispose();
   }
 
@@ -99,6 +99,7 @@ class _VideoCallScreenState extends State<VideoCallScreenUikit> {
                 bottom: 20,
                 right: 20,
                 child: FloatingActionButton(
+                 
                   onPressed: _endCallAndNavigateHome,
                   child: const Icon(Icons.call_end),
                   backgroundColor: Colors.red,
