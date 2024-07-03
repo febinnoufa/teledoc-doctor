@@ -1,6 +1,7 @@
 // ignore_for_file: depend_on_referenced_packages
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:deledocdoctor/models/shedule_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -118,26 +119,3 @@ class DisplayController extends GetxController {
   }
 }
 
-class ScheduleItem {
-  final String id;
-  final String date;
-  final String startTime;
-  final String endTime;
-
-  ScheduleItem({
-    required this.id,
-    required this.date,
-    required this.startTime,
-    required this.endTime,
-  });
-
-  factory ScheduleItem.fromFirestore(DocumentSnapshot doc) {
-    Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-    return ScheduleItem(
-      id: doc.id,
-      date: data['date'] ?? '',
-      startTime: data['startTime'] ?? '',
-      endTime: data['endTime'] ?? '',
-    );
-  }
-}

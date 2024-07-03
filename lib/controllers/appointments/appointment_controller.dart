@@ -13,7 +13,7 @@ class AppointmentController extends GetxController {
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
           .collection('appointments')
           .where('docter', isEqualTo: userId)
-          .where('end', isEqualTo: false) // Add this line to filter appointments
+          .where('end', isEqualTo: false)
           .get();
 
       return querySnapshot.docs.map((doc) => Appointment.fromFirestore(doc)).toList();
@@ -30,7 +30,7 @@ class AppointmentController extends GetxController {
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
           .collection('appointments')
           .where('docter', isEqualTo: userId)
-          .where('end', isEqualTo: true) // Add this line to filter appointments
+          .where('end', isEqualTo: true) 
           .get();
 
       return querySnapshot.docs.map((doc) => Appointment.fromFirestore(doc)).toList();

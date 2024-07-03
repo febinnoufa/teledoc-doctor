@@ -42,8 +42,7 @@ class DoctorController extends GetxController {
         }
       }
     } catch (e) {
-      // Handle error
-      // ignore: avoid_print
+      
       print(e);
     }
   }

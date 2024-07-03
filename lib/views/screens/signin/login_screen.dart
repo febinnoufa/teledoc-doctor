@@ -44,7 +44,7 @@ class LoginScreen extends StatelessWidget {
             )),
             const SizedBox(height: 30,),
           
-            Row(
+            const Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                Icon(Icons.email),
@@ -54,7 +54,7 @@ class LoginScreen extends StatelessWidget {
               ],
             ),
 
-            SizedBox(height: 50,),
+            const SizedBox(height: 50,),
 
 
 

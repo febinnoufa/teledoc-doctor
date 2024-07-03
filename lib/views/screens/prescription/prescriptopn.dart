@@ -12,6 +12,7 @@ class PrescriptionScreen extends StatefulWidget {
   final String name;
 
   @override
+  // ignore: library_private_types_in_public_api
   _PrescriptionScreenState createState() => _PrescriptionScreenState();
 }
 
@@ -119,12 +120,7 @@ class _PrescriptionScreenState extends State<PrescriptionScreen> {
     _noteController.clear();
   }
 
-  // @override
-  // void dispose() {
-  //   // _medicationController.dispose();
-  //   // _noteController.dispose();
-  //   super.dispose();
-  // }
+
 
   Widget _buildToggleButton(List<String> options, String selectedOption,
       void Function(String) onSelected) {
@@ -236,9 +232,8 @@ class _PrescriptionScreenState extends State<PrescriptionScreen> {
             ElevatedButton(
               onPressed: _addPrescription,
               style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 16),
+                padding: const EdgeInsets.symmetric(vertical: 16), backgroundColor: Colors.teal,
                 textStyle: const TextStyle(fontSize: 16),
-                primary: Colors.teal,
               ),
               child: const Text('Add medication'),
             ),
@@ -262,9 +257,8 @@ class _PrescriptionScreenState extends State<PrescriptionScreen> {
                   Get.offAll(const BotomNavigationBar());
                 },
                 style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  padding: const EdgeInsets.symmetric(vertical: 16), backgroundColor: greenColor,
                   textStyle: const TextStyle(fontSize: 16),
-                  primary: greenColor,
                 ),
                 child: const Text('Submit Prescription',
                     style: TextStyle(

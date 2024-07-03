@@ -1,6 +1,6 @@
 // ignore_for_file: depend_on_referenced_packages
 
-import 'package:deledocdoctor/controllers/details%20application/catogary_model.dart';
+import 'package:deledocdoctor/models/catogary_model.dart';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 class WidgetApplicationController extends GetxController {

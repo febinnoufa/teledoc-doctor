@@ -7,18 +7,14 @@ class ScheduledItem extends StatelessWidget {
   final String date;
   final String startTime;
   final String endTime;
- // final String schedule;
-  //final VoidCallback? onRemove;
- // final VoidCallback? onRemove2;
 
-   ScheduledItem({
+
+   ScheduledItem({super.key, 
     required this.id,
     required this.date,
     required this.startTime,
     required this.endTime,
-   // required this.schedule
-   // this.onRemove, 
-    //this.onRemove2,
+
   });
 
    final DisplayController displayController = Get.put(DisplayController());

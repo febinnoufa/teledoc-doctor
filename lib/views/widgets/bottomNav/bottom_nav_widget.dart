@@ -1,3 +1,4 @@
+import 'package:deledocdoctor/const/const.dart';
 import 'package:deledocdoctor/views/screens/Home/home.dart';
 import 'package:deledocdoctor/views/screens/Home/home_screen.dart';
 import 'package:deledocdoctor/views/screens/appointment/myappointment.dart';
@@ -40,31 +41,18 @@ class _MyHomePageState extends State<BotomNavigationBar> {
             physics: const NeverScrollableScrollPhysics(),
             controller: pageController,
             children: <Widget>[
-              HomeScreen(),
-              // Container(
-              //   alignment: Alignment.center,
-              //   child: const Icon(
-              //     Icons.favorite_rounded,
-              //     size: 56,
-              //     color: Color.fromARGB(255, 35, 10, 10),
-              //   ),
-              // ),
-              // Container(
-              //   alignment: Alignment.center,
-              //   child: Icon(
-              //     Icons.favorite_rounded,
-              //     size: 56,
-              //     color: Colors.red[400],
-              //   ),
-              // ),
-              TimeSchedulingScreen(),
-              MyAppointment(),
+              const HomeScreen(),
+          
+              const TimeSchedulingScreen(),
+              const MyAppointment(),
              // DoctorHomeScreen(),
               DoctorDetailsPage(),
             ],
           ),
           bottomNavigationBar: WaterDropNavBar(
-            backgroundColor: navigationBarColor,
+          //    backgroundColor: Colors.black,
+            waterDropColor: greenColor,
+               inactiveIconColor: Colors.black,
             onItemSelected: (int index) {
               setState(() {
                 selectedIndex = index;

@@ -1,7 +1,9 @@
 import 'package:deledocdoctor/const/const.dart';
 import 'package:deledocdoctor/controllers/appointments/appointment_controller.dart';
 import 'package:deledocdoctor/models/appointment.dart';
+import 'package:deledocdoctor/views/screens/chating/chat_screen.dart';
 import 'package:deledocdoctor/views/screens/prescription/showall_medicin.dart';
+import 'package:deledocdoctor/views/widgets/shimmer/shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -18,7 +20,7 @@ class PastAppointments extends StatelessWidget {
         future: cntr.fetchAppointmentsPastForDoctor(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
+            return const Center(child: ShimmerMyAppointment());
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -61,29 +63,29 @@ class PastAppointments extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(
                                       8.0), // Same as the Material border radius
                                   child: FadeInImage.assetNetwork(
-                                    placeholder:
-                                        'assets/profile.png', // Path to your placeholder image
-                                    image: appointment.image,
-
-                                    fit: BoxFit.cover,
-                                    width: 54, // Adjust size as needed
-                                    height: 54, // Adjust size as needed
-                                    imageErrorBuilder:
-                                        (context, error, stackTrace) {
-                                      return const CircleAvatar(
-                                        radius: 25,
-                                        backgroundImage: NetworkImage(
-                                            'https://media.istockphoto.com/id/1327592506/vector/default-avatar-photo-placeholder-icon-grey-profile-picture-business-man.jpg?s=612x612&w=0&k=20&c=BpR0FVaEa5F24GIw7K8nMWiiGmbb8qmhfkpXcp1dhQg='), // Path to your placeholder image
-                                      );
-                                    },
-                                  ),
+                                      placeholder:
+                                          'assets/profile.png', // Path to your placeholder image
+                                      image: appointment.image,
+                                      fit: BoxFit.cover,
+                                      width: 54, // Adjust size as needed
+                                      height: 54, // Adjust size as needed
+                                      imageErrorBuilder: (BuildContext context,
+                                          Object exception,
+                                          StackTrace? stackTrace) {
+                                        return Image.asset(
+                                          'assets/profile.png',
+                                          fit: BoxFit.cover,
+                                          width: 54, // Adjust size as needed
+                                          height: 54, // Adjust size as needed
+                                        );
+                                      }),
                                 ),
                               ),
 
                               const SizedBox(
                                 width: 15,
                               ),
-                              Container(
+                              SizedBox(
                                 width: 200,
                                 child: Row(
                                   mainAxisAlignment:
@@ -111,7 +113,13 @@ class PastAppointments extends StatelessWidget {
                                         onPressed: () {
                                           cntr.appointmentId =
                                               appointment.appointmentId;
-                                          //  Get.to(ChatScreen(id: appointment.userId,name: appointment.patientName,receiverPatient: appointment, ));
+                                          Get.to(ChatScreen(
+                                            id: appointment.userId,
+                                            name: appointment.patientName,
+                                            receiverPatient: appointment,
+                                            audiocall: false,
+                                            videocall: false,
+                                          ));
                                         },
                                         icon: const Icon(Icons.message))
                                   ],
@@ -145,7 +153,7 @@ class PastAppointments extends StatelessWidget {
                                     Get.to(SHowAllDataInPrescription(
                                         id: appointment.appointmentId));
                                   },
-                                  child: Text(
+                                  child: const Text(
                                     "Show Prescription",
                                     style: TextStyle(color: Colors.white),
                                   ),

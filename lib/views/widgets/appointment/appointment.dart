@@ -1,14 +1,17 @@
 import 'package:deledocdoctor/const/const.dart';
 import 'package:deledocdoctor/controllers/appointments/appointment_controller.dart';
+import 'package:deledocdoctor/controllers/vodeocall/videocall.dart';
 import 'package:deledocdoctor/models/appointment.dart';
-import 'package:deledocdoctor/models/users.dart';
 import 'package:deledocdoctor/views/screens/chating/chat_screen.dart';
+import 'package:deledocdoctor/views/widgets/shimmer/shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class UpcomingAppointment extends StatelessWidget {
   UpcomingAppointment({super.key});
   final AppointmentController cntr = Get.put(AppointmentController());
+  final VideoCallController videocallcontroller =
+      Get.put(VideoCallController());
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +20,7 @@ class UpcomingAppointment extends StatelessWidget {
         future: cntr.fetchAppointmentsForDoctor(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
+            return const Center(child: ShimmerMyAppointment());
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -51,27 +54,38 @@ class UpcomingAppointment extends StatelessWidget {
                             //  crossAxisAlignment: CrossAxisAlignment.center,
 
                             children: [
-Material(
-  elevation: 4.0,
-  borderRadius: BorderRadius.circular(8.0), // Adjust the radius as needed
-  clipBehavior: Clip.antiAlias,
-  child: ClipRRect(
-    borderRadius: BorderRadius.circular(8.0), // Same as the Material border radius
-    child: FadeInImage.assetNetwork(
-      placeholder: 'assets/profile.png', // Path to your placeholder image
-      image: appointment.image,
-      fit: BoxFit.cover,
-      width: 54, // Adjust size as needed
-      height: 54, // Adjust size as needed
-    ),
-  ),
-),
-
+                              Material(
+                                elevation: 4.0,
+                                borderRadius: BorderRadius.circular(
+                                    8.0), // Adjust the radius as needed
+                                clipBehavior: Clip.antiAlias,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(
+                                      8.0), // Same as the Material border radius
+                                  child: FadeInImage.assetNetwork(
+                                      placeholder:
+                                          'assets/profile.png', // Path to your placeholder image
+                                      image: appointment.image,
+                                      fit: BoxFit.cover,
+                                      width: 54, // Adjust size as needed
+                                      height: 54, // Adjust size as needed
+                                      imageErrorBuilder: (BuildContext context,
+                                          Object exception,
+                                          StackTrace? stackTrace) {
+                                        return Image.asset(
+                                          'assets/profile.png',
+                                          fit: BoxFit.cover,
+                                          width: 54, // Adjust size as needed
+                                          height: 54, // Adjust size as needed
+                                        );
+                                      }),
+                                ),
+                              ),
 
                               const SizedBox(
                                 width: 15,
                               ),
-                              Container(
+                              SizedBox(
                                 width: 200,
                                 child: Row(
                                   mainAxisAlignment:
@@ -79,7 +93,8 @@ Material(
                                   children: [
                                     Column(
                                       //mainAxisAlignment: MainAxisAlignment.start,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           appointment.patientName,
@@ -97,9 +112,14 @@ Material(
                                     ),
                                     IconButton(
                                         onPressed: () {
+                                          videocallcontroller.userId.value =
+                                              appointment.userId.toString();
+                                          // prints@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@#${videocallcontroller.userId.value}');
                                           cntr.appointmentId =
                                               appointment.appointmentId;
                                           Get.to(ChatScreen(
+                                            audiocall: true,
+                                            videocall: true,
                                             id: appointment.userId,
                                             name: appointment.patientName,
                                             receiverPatient: appointment,

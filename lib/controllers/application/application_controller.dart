@@ -1,10 +1,8 @@
 import 'dart:io';
-
 // ignore: depend_on_referenced_packages
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:deledocdoctor/controllers/details%20application/widgetcontroller.dart';
 import 'package:deledocdoctor/models/application.dart';
-
 // ignore: depend_on_referenced_packages
 import 'package:firebase_storage/firebase_storage.dart'; // Ensure this import is present
 import 'package:flutter/material.dart';

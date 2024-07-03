@@ -1,33 +1,29 @@
 import 'package:deledocdoctor/controllers/vodeocall/videocall.dart';
 import 'package:deledocdoctor/views/screens/prescription/prescriptopn.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:agora_uikit/agora_uikit.dart';
-
-
+import 'package:get/get.dart';
 
 class VideoCallScreenUikit extends StatefulWidget {
-  final String uid; 
 
-  final String name;
-
-  VideoCallScreenUikit({required this.uid, required this.name});
   @override
+  // ignore: library_private_types_in_public_api
   _VideoCallScreenState createState() => _VideoCallScreenState();
 }
 
 class _VideoCallScreenState extends State<VideoCallScreenUikit> {
-  //late VideoCallController videoCallController;
-  //late String token;
-  // late AgoraClient _client;
+  final VideoCallController videocontroller = Get.put(VideoCallController());
   final AgoraClient client = AgoraClient(
-    agoraConnectionData: AgoraConnectionData(
+    agoraConnectionData: AgoraConnectionData( 
       appId: "ab0681cef04a45d089df7dd7e0cb144d",
-      channelName: "teledoc",
+      channelName: "test4",
       tempToken:
-          "007eJxTYDD8frZlg6Rahqnu/QMzJSd1PcrawjFVn4F13+G7k5peCuYoMCQmGZhZGCanphmYJJqYphhYWKakmaekmKcaJCcZmpikBCytTmsIZGRYsj2HmZEBAkF8doaS1JzUlPxkBgYAshshAg==",
+          "007eJxTYGhdek/0s2Kn94X4Ug8H1nVFs24IZ5zLFvq0rm+LXNfkmw8VGBKTDMwsDJNT0wxMEk1MUwwsLFPSzFNSzFMNkpMMTUxSrj5vSWsIZGRYrWnAzMgAgSA+K0NJanGJCQMDAMdIIT4=",
     ),
   );
+
+  bool _isCameraEnabled = true;
+  bool _isMicEnabled = true;
 
   @override
   void initState() {
@@ -35,79 +31,102 @@ class _VideoCallScreenState extends State<VideoCallScreenUikit> {
     _initAgora();
   }
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   videoCallController =
-  //       Get.put(VideoCallController()); // Initialize your GetX controller
-  //   videoCallController.fetchVideoCallData().then((_) {
-  //     setState(() {
-  //       token = videoCallController.videoCallData.isNotEmpty
-  //           ? videoCallController.videoCallData[0]['token']
-  //           : '';
-  //       print("Token: $token");
-  //       _client = AgoraClient(
-  //         agoraConnectionData: AgoraConnectionData(
-  //           appId:
-  //               "ab0681cef04a45d089df7dd7e0cb144d", // Replace with your App ID
-  //           channelName: "teledoc", // Replace with your channel name
-  //           tempToken: "007eJxTYDD8frZlg6Rahqnu/QMzJSd1PcrawjFVn4F13+G7k5peCuYoMCQmGZhZGCanphmYJJqYphhYWKakmaekmKcaJCcZmpikBCytTmsIZGRYsj2HmZEBAkF8doaS1JzUlPxkBgYAshshAg==",
-  //         ),
-  //       );
-  //       _initAgora();
-  //     });
-  //   });
-  // }
-
   Future<void> _initAgora() async {
     await client.initialize();
   }
 
-  Future<void> _endCallAndNavigateHome() async {
-    await client.engine.leaveChannel();
-    Get.off(PrescriptionScreen(
-      userId: widget.uid,
-      name: widget.name,
-    )); 
-  }
-
   @override
   void dispose() {
-    client.engine?.leaveChannel();
+    client.engine.leaveChannel();
     super.dispose();
+  }
+
+  void offCamera() {
+    setState(() {
+      _isCameraEnabled = !_isCameraEnabled;
+    });
+    client.engine.muteLocalVideoStream(!_isCameraEnabled);
+  }
+
+  void toggleMic() {
+    setState(() {
+      _isMicEnabled = !_isMicEnabled;
+    });
+    client.engine.muteLocalAudioStream(!_isMicEnabled);
+  }
+
+  void switchCamera() {
+    client.engine.switchCamera();
+  }
+
+  void leaveCall() async {
+    await videocontroller.deleteDoc();
+    client.engine.leaveChannel();
+    Get.off(PrescriptionScreen(userId: videocontroller.userId.value,name: "",));
+   // Navigator.of(context).pop(); // Example: Navigate back to previous screen
+  }
+
+  Widget _buildControlButton(
+      IconData icon, Color color, VoidCallback onPressed) {
+    return Container(
+      decoration: const BoxDecoration(
+        shape: BoxShape.circle,
+        color: Colors.black54,
+      ),
+      child: IconButton(
+        icon: Icon(icon, color: color),
+        onPressed: onPressed,
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text('Agora Video Call'),
-      // ),
       body: SafeArea(
-        child: GetBuilder<VideoCallController>(
-          // init: videoCallController,
-          builder: (_) => Stack(
-            children: [
-              AgoraVideoViewer(
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child: AgoraVideoViewer(
                 client: client,
                 layoutType: Layout.oneToOne,
-                enableHostControls:
-                    true, 
+                enableHostControls: true,
               ),
-           
-              Positioned(
-                bottom: 20,
-                right: 20,
-                child: FloatingActionButton(
-                 
-                  onPressed: _endCallAndNavigateHome,
-                  child: const Icon(Icons.call_end),
-                  backgroundColor: Colors.red,
-                ),
+            ),
+            Positioned(
+              bottom: 20,
+              left: 0,
+              right: 0,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  _buildControlButton(
+                    _isCameraEnabled ? Icons.videocam : Icons.videocam_off,
+                    Colors.white,
+                    offCamera,
+                  ),
+                  const SizedBox(width: 20),
+                  _buildControlButton(
+                    _isMicEnabled ? Icons.mic : Icons.mic_off,
+                    Colors.white,
+                    toggleMic,
+                  ),
+                  const SizedBox(width: 20),
+                  _buildControlButton(
+                    Icons.switch_camera,
+                    Colors.white,
+                    switchCamera,
+                  ),
+                  const SizedBox(width: 20),
+                  _buildControlButton(
+                    Icons.call_end,
+                    Colors.red,
+                    leaveCall,
+                  ),
+                ],
               ),
-              AgoraVideoButtons(client: client),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

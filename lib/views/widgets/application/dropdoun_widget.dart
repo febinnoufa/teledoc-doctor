@@ -1,4 +1,4 @@
-import 'package:deledocdoctor/controllers/details%20application/catogary_model.dart';
+import 'package:deledocdoctor/models/catogary_model.dart';
 import 'package:deledocdoctor/controllers/details%20application/widgetcontroller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

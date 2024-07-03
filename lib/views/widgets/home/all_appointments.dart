@@ -1,6 +1,7 @@
 import 'package:deledocdoctor/controllers/appointments/appointment_controller.dart';
 import 'package:deledocdoctor/models/appointment.dart';
 import 'package:deledocdoctor/views/widgets/home/patient_widget.dart';
+import 'package:deledocdoctor/views/widgets/shimmer/shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -30,18 +31,14 @@ class AllAppointment extends StatelessWidget {
               future: cntr.fetchAppointmentsForDoctor(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
+                  return const Center(child: ShimmerMyAppointment());
                 } else if (snapshot.hasError) {
                   return Center(child: Text('Error: ${snapshot.error}'));
                 } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                   return const Center(child: Text('No appointments found'));
                 } else {
                   final appointments = snapshot.data!;
-                  // ..sort((a, b) {
-                  //   DateTime dateA = DateTime.parse("${a.date} ${a.time}");
-                  //   DateTime dateB = DateTime.parse("${b.date} ${b.time}");
-                  //   return dateA.compareTo(dateB);
-                  // });
+               
                   return PatientWidget(appointments: appointments,);
                 }
               },

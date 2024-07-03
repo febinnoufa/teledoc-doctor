@@ -31,13 +31,13 @@ class MyAppointment extends StatelessWidget {
                     borderRadius: BorderRadius.circular(20)
                   ),
                   // Set the background color if needed
-                  child:  TabBar(
+                  child:const  TabBar(
                     
                     dividerColor: greenColor,
                     indicatorColor: greenColor,
                     unselectedLabelColor: Colors.white,
                     labelColor: greenColor,
-                    tabs: const [
+                    tabs:  [
                       Tab(text: 'Upcoming'),
                       Tab(text: 'Past'),
                      // Tab(text: 'Cancelled'),

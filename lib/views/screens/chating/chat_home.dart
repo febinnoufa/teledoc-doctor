@@ -1,5 +1,4 @@
 import 'package:deledocdoctor/views/widgets/chating/all_users.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class ChatingHomeScreen extends StatelessWidget {

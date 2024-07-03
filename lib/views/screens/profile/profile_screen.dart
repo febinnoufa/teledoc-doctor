@@ -12,6 +12,7 @@ class DoctorDetailsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        foregroundColor: Colors.black,
         title: Text(
           'Dr. ${doctorController.doctor.value.name}',
           style: const TextStyle(color: Colors.black),

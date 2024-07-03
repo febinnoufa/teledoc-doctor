@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:get/get.dart';
+
 
 class SHowAllDataInPrescription extends StatelessWidget {
   final String id;
@@ -45,13 +45,13 @@ class SHowAllDataInPrescription extends StatelessWidget {
                 final doc = data.docs[index];
                 final prescriptions = doc['prescriptions'] as List<dynamic>;
                 final docNote = doc['docnote'] ?? '';
-                final userId = doc['userId'] ?? '';
+              //  final userId = doc['userId'] ?? '';
                 final name = doc['name'] ?? '';
-                final timestamp = doc['timestamp']?.toDate() ?? DateTime.now();
+              //  final timestamp = doc['timestamp']?.toDate() ?? DateTime.now();
           
                 return Column(
                   children: [
-                    SizedBox(height: 40,),
+                    const SizedBox(height: 40,),
                     Card(
                         elevation: 15,
                         margin: const EdgeInsets.all(10),
@@ -72,16 +72,16 @@ class SHowAllDataInPrescription extends StatelessWidget {
                                 ),
                                 
                               ),
-                              SizedBox(height: 20,),
+                              const SizedBox(height: 20,),
                               const Divider(
                                 thickness: 3,
                               ),
                               const SizedBox(
                                 height: 15,
                               ),
-                              Text(
+                              const Text(
                                 "Doctor Note : ",
-                                style: const TextStyle(
+                                style: TextStyle(
                                     fontSize: 15, fontWeight: FontWeight.w400),
                                 maxLines: 4,
                               ),
@@ -108,7 +108,7 @@ class SHowAllDataInPrescription extends StatelessWidget {
                                     prescription['durationUnit'] ?? '';
                                 final repeat = prescription['repeat'] ?? '';
                                 final timeOfDay = prescription['timeOfDay'] ?? '';
-                                final beTaken = prescription['beTaken'] ?? '';
+                              //  final beTaken = prescription['beTaken'] ?? '';
                     
                                 return Padding(
                                   padding: const EdgeInsets.only(left: 5,top: 10),
@@ -145,8 +145,8 @@ class SHowAllDataInPrescription extends StatelessWidget {
                                       
                                     ],
                                   ),
-                                  SizedBox(height: 20,),
-                                   Divider(thickness: 3,)
+                                  const SizedBox(height: 20,),
+                                   const Divider(thickness: 3,)
                                  ],),
                                 );
                               }).toList(),

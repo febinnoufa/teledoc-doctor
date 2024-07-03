@@ -24,7 +24,7 @@ class AuthController extends GetxController {
 
       loginEmailController.clear();
       loginPasswordController.clear();
-      Get.to(const BotomNavigationBar());
+      Get.offAll(const BotomNavigationBar());
     } catch (e) {
       Get.snackbar("Error", e.toString(), snackPosition: SnackPosition.BOTTOM);
     }

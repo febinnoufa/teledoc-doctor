@@ -57,6 +57,7 @@ class TimeScheduleButtonWidget extends StatelessWidget {
             timeController.startTime.value = null;
             timeController.endTime.value = null;
 
+            // ignore: use_build_context_synchronously
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
                 content: Text('Time scheduled successfully.'),

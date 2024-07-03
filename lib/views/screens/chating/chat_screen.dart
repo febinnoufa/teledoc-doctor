@@ -1,20 +1,30 @@
 // chat_screen.dart (Doctor Side)
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:deledocdoctor/controllers/vodeocall/videocall.dart';
 import 'package:deledocdoctor/views/screens/videocall/uikit.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:get/get.dart';
 import 'package:deledocdoctor/controllers/message/message_controller.dart';
 
-
+// ignore: must_be_immutable
 class ChatScreen extends StatefulWidget {
-  final  receiverPatient;
- 
+  // ignore: prefer_typing_uninitialized_variables
+  final receiverPatient;
   final name;
   final id;
+  bool videocall;
+  bool audiocall;
 
-  const ChatScreen({super.key,required this.name,required this.id,required this.receiverPatient});
+  ChatScreen(
+      {super.key,
+      required this.audiocall,
+      required this.name,
+      required this.id,
+      required this.receiverPatient,
+      required this.videocall});
 
   @override
   State<ChatScreen> createState() => _ChatScreenState();
@@ -24,6 +34,8 @@ class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _messagecontroller = TextEditingController();
   final ChatingController chatingcontroller = Get.put(ChatingController());
   final ScrollController _scrollController = ScrollController();
+  final VideoCallController videocallcontroller =
+      Get.put(VideoCallController());
 
   @override
   void initState() {
@@ -31,6 +43,12 @@ class _ChatScreenState extends State<ChatScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _scrollToBottom();
     });
+  }
+
+  void _makePhoneCall(String number) async {
+    //const number = '7012846511'; // Replace with the number you want to call
+    bool? res = await FlutterPhoneDirectCaller.callNumber(number);
+    if (res == null || !res) {}
   }
 
   @override
@@ -49,7 +67,6 @@ class _ChatScreenState extends State<ChatScreen> {
     if (_messagecontroller.text.isNotEmpty) {
       await chatingcontroller.sendMessage(
           widget.id.toString(), _messagecontroller.text);
-
       _messagecontroller.clear();
       _scrollToBottom();
     }
@@ -66,31 +83,25 @@ class _ChatScreenState extends State<ChatScreen> {
         title: Text("${widget.name}"),
         centerTitle: true,
         actions: [
-            IconButton(
-            icon: const Icon(Icons.video_call),
-            onPressed: () {
-            
-              Get.to(VideoCallScreenUikit(name:widget.name,uid:   widget.id));
-              // Get.to(VideoCallScreen(
-              //   name: widget.name,
-              //  // data: ,
-              //     channel: "fluttering",
-              //     token:
-              //         "007eJxTYDiy8b7/NSbH+0+qM/ZMYp9YfbctQzDB9aznXPbG5vi2n38UGCxMjNJSEtMMLSwtTUxMDNMsTIxT05ItLJINjAyTUgwsHZuK0hoCGRmaEzMZGKEQxOdiSMspLSlJLcrMS2dgAABxECKa",
-              //     uid: widget.id.toString()));
-              //   _initiateVideoCall;
-            },
-            // onPressed: () {
-            //   Navigator.push(
-            //     context,
-            //     MaterialPageRoute(
-            //       builder: (context) => VideoCallScreen(
-            //           receiverId: widget.receiverPatient.id.toString()),
-            //     ),
-            //   );
-            // },
-          ),
-        ],      ),
+          widget.audiocall == true
+              ? IconButton(
+                  onPressed: () {
+                    _makePhoneCall(widget.receiverPatient.contactNumber);
+                  },
+                  icon: const Icon(Icons.call))
+              : const SizedBox(),
+          widget.videocall == true
+              ? IconButton(
+                  icon: const Icon(Icons.video_call),
+                  onPressed: () async {
+                    await videocallcontroller.sendtoken(widget.name);
+                    //    await videocallcontroller.sendtokenOnRealTIme(widget.name);
+                    Get.to(VideoCallScreenUikit());
+                  },
+                )
+              : const SizedBox()
+        ],
+      ),
       body: Column(
         children: [
           const SizedBox(height: 10),
@@ -102,21 +113,27 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   Widget _buildMessageList() {
+    final currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser == null) {
+      return const Center(child: Text("User not logged in"));
+    }
+
     return StreamBuilder(
-      stream: chatingcontroller.getMessages(
-          widget.id.toString(),
-          FirebaseAuth.instance.currentUser!.uid),
+      stream:
+          chatingcontroller.getMessages(widget.id.toString(), currentUser.uid),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return Text("Error ${snapshot.error}");
         }
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Text("Loading....");
-        }
+       
 
         WidgetsBinding.instance.addPostFrameCallback((_) {
           _scrollToBottom();
         });
+
+        if (!snapshot.hasData) {
+          return const Center(child: Text("No messages"));
+        }
 
         return ListView(
           controller: _scrollController,
@@ -129,8 +146,12 @@ class _ChatScreenState extends State<ChatScreen> {
 
   Widget _buildMessageItem(DocumentSnapshot doc) {
     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-    bool isCurrentUser =
-        data['senderId'] == FirebaseAuth.instance.currentUser!.uid;
+    final currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser == null) {
+      return const SizedBox.shrink();
+    }
+
+    bool isCurrentUser = data['senderId'] == currentUser.uid;
     var alignment =
         isCurrentUser ? Alignment.centerRight : Alignment.centerLeft;
 
@@ -152,7 +173,7 @@ class _ChatScreenState extends State<ChatScreen> {
               borderRadius: BorderRadius.circular(15.0),
               boxShadow: const [
                 BoxShadow(
-                    color: Colors.black12, offset: Offset(1, 2), blurRadius: 5)
+                    color: Colors.black12, offset: Offset(1, 2), blurRadius: 5),
               ],
             ),
             child: Column(
@@ -182,24 +203,41 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   Widget _buildMessageInput() {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
-      child: Row(
-        children: [
-          Expanded(
-            child: TextField(
-              controller: _messagecontroller,
-              decoration: const InputDecoration(
-                hintText: "Enter your message...",
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(30.0)),
+    return Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 2,
+              blurRadius: 5,
+              offset: const Offset(0, 3),
+            ),
+          ],
+          borderRadius: BorderRadius.circular(30.0),
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              child: TextField(
+                controller: _messagecontroller,
+                decoration: InputDecoration(
+                  hintText: "Enter your message...",
+                  hintStyle: TextStyle(color: Colors.grey[600]),
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  border: InputBorder.none,
                 ),
               ),
             ),
-          ),
-          IconButton(icon: const Icon(Icons.send), onPressed: sendMessage),
-        
-        ],
+            IconButton(
+              icon: const Icon(Icons.send, color: Colors.blue),
+              onPressed: sendMessage,
+            ),
+          ],
+        ),
       ),
     );
   }

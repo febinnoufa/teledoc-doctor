@@ -27,9 +27,9 @@ class _HomeIntroDesgnState extends State<HomeIntroDesgn> {
     return Container(
       height: 250,
       width: double.infinity,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: greenColor,
-        borderRadius: const BorderRadius.only(
+        borderRadius: BorderRadius.only(
           bottomLeft: Radius.circular(25),
           bottomRight: Radius.circular(25),
         ),

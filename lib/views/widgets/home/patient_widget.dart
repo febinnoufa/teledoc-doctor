@@ -2,8 +2,10 @@ import 'package:deledocdoctor/const/const.dart';
 import 'package:flutter/material.dart';
 
 class PatientWidget extends StatelessWidget {
-  PatientWidget({super.key, this.appointments, this.name});
+  const PatientWidget({super.key, this.appointments, this.name});
+  // ignore: prefer_typing_uninitialized_variables
   final appointments;
+  // ignore: prefer_typing_uninitialized_variables
   final name;
 
   @override
@@ -48,7 +50,16 @@ class PatientWidget extends StatelessWidget {
           fit: BoxFit.cover,
           width: 54, // Adjust size as needed
           height: 54, // Adjust size as needed
+           imageErrorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+          return Image.asset(
+            'assets/profile.png',
+            fit: BoxFit.cover,
+             width: 54, // Adjust size as needed
+          height: 54, // Adjust size as needed
+          );
+           }
         ),
+        
       ),
     ),
     const SizedBox(height: 11),
@@ -67,9 +78,9 @@ class PatientWidget extends StatelessWidget {
               Container(
                 height: 38,
                 width: 190,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: greenColor,
-                  borderRadius: const BorderRadius.only(
+                  borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(15),
                     bottomRight: Radius.circular(15),
                   ),
@@ -77,10 +88,18 @@ class PatientWidget extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Icon(
-                      Icons.timer,
-                      size: 20,
+                     Text(
+                      "${appointment.date}  - ",
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
+                    // const Icon(
+                    //   Icons.timer,
+                    //   size: 20,
+                    // ),
                     const SizedBox(
                       width: 5,
                     ),
