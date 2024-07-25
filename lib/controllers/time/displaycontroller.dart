@@ -17,6 +17,14 @@ class DisplayController extends GetxController {
     fetchUserSchedules();
   }
 
+
+
+
+
+
+   // fetch user Shedule
+  //************************************************************************** */
+
   Future<void> fetchUserSchedules() async {
     try {
       List<ScheduleItem> fetchedSchedules = await _getUserSchedules();
@@ -26,6 +34,13 @@ class DisplayController extends GetxController {
       print("Error fetching schedules: $e");
     }
   }
+
+
+
+
+
+   // Get User Shedule
+  //************************************************************************** */
 
   Future<List<ScheduleItem>> _getUserSchedules() async {
     User? currentUser = _auth.currentUser;
@@ -45,6 +60,13 @@ class DisplayController extends GetxController {
     }
   }
 
+
+
+
+
+
+ // Splite 30 min to intervel
+  //************************************************************************** */
   Map<String, bool> splitTimeIntoIntervals(String startTime, String endTime) {
     final DateFormat inputTimeFormat = DateFormat('h:mm a');
     final DateFormat outputTimeFormat = DateFormat('h:mm a');
@@ -70,6 +92,11 @@ class DisplayController extends GetxController {
     return intervals;
   }
 
+
+
+   // Add Doctor free time
+  //************************************************************************** */
+
   doctorsheduleadd(String date, String startTime, String endTime) async {
     User? currentUser = _auth.currentUser;
     if (currentUser != null) {
@@ -92,6 +119,13 @@ class DisplayController extends GetxController {
     }
   }
 
+
+
+
+
+ // Delete Shedule
+  //************************************************************************** */
+
   void deleteSchedule(String scheduleId) async {
     User? currentUser = _auth.currentUser;
     if (currentUser != null) {
@@ -99,6 +133,12 @@ class DisplayController extends GetxController {
       await fetchUserSchedules();
     }
   }
+
+
+
+
+   // Remove Shedule
+  //************************************************************************** */
 
   void removeSchedule(String scheduleId) async {
     User? currentUser = _auth.currentUser;

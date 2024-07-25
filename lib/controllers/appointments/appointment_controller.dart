@@ -7,6 +7,16 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class AppointmentController extends GetxController {
   late String appointmentId;
+
+
+
+
+
+
+
+   // fetch Appointment Doctor
+  //************************************************************************** */
+
   Future<List<Appointment>> fetchAppointmentsForDoctor() async {
     try {
       final userId = FirebaseAuth.instance.currentUser!.uid;
@@ -23,6 +33,11 @@ class AppointmentController extends GetxController {
       return [];
     }
   }
+
+
+
+  // Fetch past Appointment 
+  //************************************************************************** */
 
     Future<List<Appointment>> fetchAppointmentsPastForDoctor() async {
     try {

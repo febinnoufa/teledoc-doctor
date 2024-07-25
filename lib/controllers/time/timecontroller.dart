@@ -5,6 +5,13 @@ class TimeScheduleController extends GetxController {
   var startTime = Rx<TimeOfDay?>(null);
   var endTime = Rx<TimeOfDay?>(null);
 
+
+
+
+
+   // Select Time
+  //************************************************************************** */
+
   Future<void> selectTime(BuildContext context, bool isStartTime) async {
     final TimeOfDay? picked = await showTimePicker(
       context: context,

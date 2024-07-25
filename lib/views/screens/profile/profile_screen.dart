@@ -1,4 +1,5 @@
 import 'package:deledocdoctor/controllers/signin/auth_controller.dart';
+import 'package:deledocdoctor/views/screens/profile/pryvasy.dart';
 import 'package:deledocdoctor/views/widgets/Time/imagepreview.dart';
 import 'package:deledocdoctor/controllers/doctor/doc_controller.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,9 @@ class DoctorDetailsPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         foregroundColor: Colors.black,
+        leading: IconButton(onPressed: (){
+          Get.to(PrivacyPolicyPage());
+        }, icon: Icon(Icons.info)),
         title: Text(
           'Dr. ${doctorController.doctor.value.name}',
           style: const TextStyle(color: Colors.black),

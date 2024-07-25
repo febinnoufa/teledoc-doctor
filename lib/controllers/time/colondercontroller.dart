@@ -12,6 +12,13 @@ class CalendarController extends GetxController {
     calendarFormat.value = format;
   }
 
+
+
+
+
+   // Selected date
+  //************************************************************************** */
+
   void onDaySelected(DateTime selectedDay, DateTime focusedDay) {
     if (!isSameDay(this.selectedDay.value, selectedDay)) {
       this.selectedDay.value = selectedDay;

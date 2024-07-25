@@ -23,7 +23,6 @@ class ChatingAllUsers extends StatelessWidget {
       UserModel user = UserModel.fromMap(doc.data());
       String otherUserId = user.id.toString();
 
-      // Check if there are messages between the current user and this user
       List<String> ids = [currentUserId, otherUserId];
       ids.sort();
       String chatRoomId = ids.join("_");

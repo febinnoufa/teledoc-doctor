@@ -12,13 +12,13 @@ class ChatingController extends GetxController {
     final currentUserId = _auth.currentUser!.uid;
     final currentuserEmail = _auth.currentUser!.email.toString();
     final Timestamp timestamp = Timestamp.now();
-    final  idtime=Timestamp.now().microsecondsSinceEpoch;
-      List<String> ids = [currentUserId, receiverId];
+    final idtime = Timestamp.now().microsecondsSinceEpoch;
+    List<String> ids = [currentUserId, receiverId];
     ids.sort();
     String chatroomId = ids.join("_");
 
     Message newMessage = Message(
-        messageId:"$chatroomId""_$idtime",
+        messageId: "$chatroomId" "_$idtime",
         newMessage: true,
         senderId: currentUserId,
         senderEmail: currentuserEmail,
@@ -26,13 +26,12 @@ class ChatingController extends GetxController {
         message: message,
         timestamp: timestamp);
 
-  
-
-      await _fireStore
-          .collection("chat_rooms")
-          .doc(chatroomId)
-          .collection("messages")
-          .doc("$chatroomId""_$idtime"). set(newMessage.toMap());
+    await _fireStore
+        .collection("chat_rooms")
+        .doc(chatroomId)
+        .collection("messages")
+        .doc("$chatroomId" "_$idtime")
+        .set(newMessage.toMap());
   }
 
   // Get messages

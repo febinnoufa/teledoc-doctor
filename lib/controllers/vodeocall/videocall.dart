@@ -2,9 +2,12 @@ import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-
 class VideoCallController extends GetxController {
   RxList<DocumentSnapshot> videoCallData = RxList<DocumentSnapshot>();
+
+  // Send Token
+  //************************************************************************** */
+
   RxString userId = ''.obs;
 
   sendtoken(String name) async {
@@ -30,6 +33,8 @@ class VideoCallController extends GetxController {
     });
   }
 
+  // Delete Doc
+  //************************************************************************** */
 
   Future<void> deleteDoc() async {
     if (userId.isEmpty) {
@@ -45,5 +50,3 @@ class VideoCallController extends GetxController {
         .delete();
   }
 }
-
-

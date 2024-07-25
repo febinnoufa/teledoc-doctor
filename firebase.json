@@ -1,1 +1,39 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"tele-doc-ed764","appId":"1:1057168250517:android:01197df915d9a40f64ad9c","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"tele-doc-ed764","configurations":{"android":"1:1057168250517:android:01197df915d9a40f64ad9c","ios":"1:1057168250517:ios:6674ac1ed6515fba64ad9c","macos":"1:1057168250517:ios:6674ac1ed6515fba64ad9c","web":"1:1057168250517:web:43308f5afd67efec64ad9c","windows":"1:1057168250517:web:28323a470d378e5b64ad9c"}}}}}}
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "tele-doc-ed764",
+          "appId": "1:1057168250517:android:01197df915d9a40f64ad9c",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "tele-doc-ed764",
+          "configurations": {
+            "android": "1:1057168250517:android:01197df915d9a40f64ad9c",
+            "ios": "1:1057168250517:ios:6674ac1ed6515fba64ad9c",
+            "macos": "1:1057168250517:ios:6674ac1ed6515fba64ad9c",
+            "web": "1:1057168250517:web:43308f5afd67efec64ad9c",
+            "windows": "1:1057168250517:web:28323a470d378e5b64ad9c"
+          }
+        }
+      }
+    }
+  },
+  "hosting": {
+    "public": "y",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}

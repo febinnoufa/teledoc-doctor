@@ -30,12 +30,26 @@ class ApplicationController extends GetxController {
   var downloadlicenseUrl = "".obs;
   var loading = false.obs;
 
+
+
+
+
+
+   // Get Image
+  //************************************************************************** */
+
   Future<void> getImage(image) async {
     final pickedImage =
         await ImagePicker().pickImage(source: ImageSource.gallery);
     if (pickedImage == null) return;
     image.value = pickedImage.path;
   }
+
+
+
+
+   // upload Image
+  //************************************************************************** */
 
   Future<String?> uploadImage(File image) async {
     try {
@@ -55,6 +69,13 @@ class ApplicationController extends GetxController {
   }
 
   FirebaseFirestore db = FirebaseFirestore.instance;
+
+
+
+
+
+   // Send Application
+  //************************************************************************** */
 
   sendapplication() async {
     DoctorApplicationModel application = DoctorApplicationModel(

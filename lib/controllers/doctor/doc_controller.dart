@@ -32,6 +32,12 @@ class DoctorController extends GetxController {
     fetchDoctorDetails();
   }
 
+
+
+
+  // Fetch Doctor Details
+  //************************************************************************** */
+
   void fetchDoctorDetails() async {
     try {
       User? currentUser = _auth.currentUser;
